@@ -137,7 +137,7 @@ function processAnalysis(data) {
     const tablesDiv = document.getElementById('tables');
     tablesDiv.innerHTML = '';
 
-    const filteredData = data.filter(row => String(row[3]).toUpperCase() === monthFilter); // Indeks 3 adalah 'bulan'
+    const filteredData = data.filter(row => String(row[3]).toUpperCase() === monthFilter);
     console.log('Data ditapis untuk bulan:', filteredData);
 
     if (filteredData.length === 0) {
@@ -145,11 +145,11 @@ function processAnalysis(data) {
     } else {
         for (let tingkatan = 1; tingkatan <= 5; tingkatan++) {
             let tableData = filteredData
-                .filter(row => String(row[1]) === String(tingkatan)) // Indeks 1 adalah 'tingkatan'
+                .filter(row => String(row[1]) === String(tingkatan))
                 .map(row => ({
-                    kelas: row[2],       // Indeks 2 adalah 'kelas'
-                    total: row[33],      // Indeks 33 adalah 'JUMLAH'
-                    peratusan: row[34]   // Indeks 34 adalah 'PERATUSAN'
+                    kelas: row[2],
+                    total: row[33],
+                    peratusan: row[34]
                 }))
                 .sort((a, b) => b.total - a.total);
 
@@ -171,7 +171,7 @@ function processAnalysis(data) {
                 label: kelas,
                 data: months.map(month => {
                     const entry = data.find(row => String(row[1]) === String(tingkatan) && row[2] === kelas && String(row[3]).toUpperCase() === month);
-                    return entry ? entry[33] : 0; // Indeks 33 adalah 'JUMLAH'
+                    return entry ? entry[33] : 0;
                 }),
                 borderColor: `hsl(${Math.random() * 360}, 70%, 50%)`,
                 fill: false
