@@ -46,7 +46,7 @@ function showAnalysis() {
     fetchAnalysisData();
 }
 
-document.getElementById('cleanlinessForm').addEventListener('submit', function(e) {
+document.getElementById('cleanlinessForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     const submitBtn = document.getElementById('submitBtn');
     submitBtn.disabled = true;
@@ -63,32 +63,46 @@ document.getElementById('cleanlinessForm').addEventListener('submit', function(e
     data.total = total;
     data.peratusan = ((total / (CRITERIA_COUNT * 5)) * 100).toFixed(2);
 
-    fetch(APP_SCRIPT_URL, {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(response => response.text())
-    .then(result => {
-        alert(result === 'Success' ? 'Data berjaya disimpan!' : 'Gagal menyimpan data!');
+    try {
+        const response = await fetch(APP_SCRIPT_URL, {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            mode: 'no-cors' // Guna 'no-cors' kerana Apps Script tidak menyokong respons CORS penuh
+        });
+
+        // Dengan 'no-cors', kita tidak boleh membaca response.text() secara langsung,
+        // jadi kita anggap kejayaan jika tiada ralat dilemparkan
+        alert('Data berjaya disimpan!');
         submitBtn.disabled = false;
         this.reset();
-    })
-    .catch(error => {
-        alert('Error: ' + error);
+    } catch (error) {
+        console.error('Fetch Error:', error);
+        alert('Ralat berlaku semasa menghantar data: ' + error.message);
         submitBtn.disabled = false;
-    });
+    }
 });
 
 function fetchAnalysisData() {
-    fetch(APP_SCRIPT_URL)
-        .then(response => response.json())
-        .then(data => {
-            processAnalysis(data);
-        })
-        .catch(error => console.error('Error fetching data:', error));
+    fetch(APP_SCRIPT_URL, {
+        method: 'GET',
+        mode: 'cors'
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        processAnalysis(data);
+    })
+    .catch(error => {
+        console.error('Error fetching data:', error);
+        alert('Ralat mengambil data analisis: ' + error.message);
+    });
 }
 
 function processAnalysis(data) {
