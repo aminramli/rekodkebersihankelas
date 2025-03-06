@@ -1,4 +1,4 @@
-const APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyFzwKUIEj1hFn38aHukVF7sb-XXJ_MgZlJi9INQeTQbTwyjCuLSrOtKDUXCFHV70iK/exec';
+const APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyDHgNzgKQV-t5fc6jbkLXRp54dIlKvSgXyEfUI7WPcMemoDj5VEAyVb6_nR0jg3T6l/exec';
 const CRITERIA_COUNT = 28;
 let charts = {};
 let isLoggedIn = false;
@@ -70,18 +70,24 @@ document.getElementById('cleanlinessForm').addEventListener('submit', function(e
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
             if (xhr.status === 200) {
+                console.log('Respons dari Apps Script:', xhr.responseText);
                 alert('Data berjaya disimpan!');
                 submitBtn.disabled = false;
                 document.getElementById('cleanlinessForm').reset();
+            } else if (xhr.status === 0) {
+                alert('Gagal menyimpan data: Tiada sambungan ke pelayan (Status: 0). Sila hoskan aplikasi pada pelayan web.');
+                submitBtn.disabled = false;
             } else {
                 alert('Gagal menyimpan data: ' + xhr.statusText + ' (Status: ' + xhr.status + ')');
+                console.log('Ralat respons:', xhr.responseText);
                 submitBtn.disabled = false;
             }
         }
     };
 
     xhr.onerror = function() {
-        alert('Ralat berlaku semasa menghantar data. Sila semak sambungan internet atau URL Apps Script.');
+        alert('Ralat rangkaian semasa menghantar data. Sila semak sambungan internet atau hoskan aplikasi pada pelayan web.');
+        console.error('Ralat xhr:', xhr);
         submitBtn.disabled = false;
     };
 
@@ -97,7 +103,7 @@ function fetchAnalysisData() {
             if (xhr.status === 200) {
                 try {
                     const data = JSON.parse(xhr.responseText);
-                    console.log('Data dari Google Sheet:', data); // Log data mentah
+                    console.log('Data dari Google Sheet:', data);
                     if (data.length === 0) {
                         alert('Tiada data dalam Google Sheet.');
                     }
@@ -105,6 +111,8 @@ function fetchAnalysisData() {
                 } catch (e) {
                     alert('Ralat memproses data dari Google Sheet: ' + e.message);
                 }
+            } else if (xhr.status === 0) {
+                alert('Gagal mengambil data analisis: Tiada sambungan ke pelayan (Status: 0). Sila hoskan aplikasi pada pelayan web.');
             } else {
                 alert('Gagal mengambil data analisis: ' + xhr.statusText + ' (Status: ' + xhr.status + ')');
             }
@@ -112,7 +120,7 @@ function fetchAnalysisData() {
     };
 
     xhr.onerror = function() {
-        alert('Ralat mengambil data analisis. Sila semak sambungan internet atau URL Apps Script.');
+        alert('Ralat rangkaian semasa mengambil data. Sila semak sambungan internet atau hoskan aplikasi pada pelayan web.');
     };
 
     xhr.send();
@@ -124,17 +132,14 @@ function processAnalysis(data) {
     const currentMonth = 'MAC';
 
     const monthFilter = document.getElementById('analysisMonth').value || currentMonth;
-    console.log('Bulan yang dipilih:', monthFilter); // Log bulan yang dipilih
+    console.log('Bulan yang dipilih:', monthFilter);
 
     const tablesDiv = document.getElementById('tables');
     tablesDiv.innerHTML = '';
 
-    // Penapis data berdasarkan bulan
-    const filteredData = data.filter(row => {
-        const bulan = String(row[3]).toUpperCase(); // Indeks 3 adalah 'bulan', pastikan huruf besar
-        return bulan === monthFilter;
-    });
-    console.log('Data ditapis untuk bulan:', filteredData); // Log data yang ditapis
+    // Penapis data berdasarkan bulan (indeks 3 kerana TIMESTAMP di 0)
+    const filteredData = data.filter(row => String(row[3]).toUpperCase() === monthFilter);
+    console.log('Data ditapis untuk bulan:', filteredData);
 
     if (filteredData.length === 0) {
         tablesDiv.innerHTML = '<p>Tiada data untuk bulan yang dipilih.</p>';
@@ -144,8 +149,8 @@ function processAnalysis(data) {
                 .filter(row => String(row[1]) === String(tingkatan)) // Indeks 1 adalah 'tingkatan'
                 .map(row => ({
                     kelas: row[2],       // Indeks 2 adalah 'kelas'
-                    total: row[32],      // Indeks 32 adalah 'total'
-                    peratusan: row[33]   // Indeks 33 adalah 'peratusan'
+                    total: row[33],      // Indeks 33 adalah 'total'
+                    peratusan: row[34]   // Indeks 34 adalah 'peratusan'
                 }))
                 .sort((a, b) => b.total - a.total);
 
@@ -168,7 +173,7 @@ function processAnalysis(data) {
                 label: kelas,
                 data: months.map(month => {
                     const entry = data.find(row => String(row[1]) === String(tingkatan) && row[2] === kelas && String(row[3]).toUpperCase() === month);
-                    return entry ? entry[32] : 0; // Indeks 32 adalah 'total'
+                    return entry ? entry[33] : 0; // Indeks 33 adalah 'total'
                 }),
                 borderColor: `hsl(${Math.random() * 360}, 70%, 50%)`,
                 fill: false
