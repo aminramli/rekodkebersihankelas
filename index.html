@@ -3,377 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MRSM Sultan Azlan Shah - Kebersihan Kelas</title>
+    <title>Sistem Kebersihan Kelas</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <header>
-        <h1>MRSM Sultan Azlan Shah - Kebersihan Kelas</h1>
-        <div class="nav-buttons">
-            <button onclick="showAnalysis()">Analisis Kebersihan</button>
-            <button onclick="showLogin()">Borang Kebersihan</button>
-            <button id="logoutBtn" onclick="logout()" style="display: none;">Log Keluar</button>
-        </div>
-    </header>
-
     <div class="container">
-        <!-- Login Section -->
+        <!-- Bahagian Log Masuk -->
         <div id="login" class="section">
             <h2>Log Masuk</h2>
-            <input type="text" id="username" placeholder="ID">
-            <input type="password" id="password" placeholder="Kata Laluan">
-            <button id="loginBtn" onclick="login()">Log Masuk</button>
-        </div>
-
-        <!-- Form Section -->
-        <div id="form" class="section">
-            <h2>Rekod Kebersihan Kelas</h2>
-            <form id="cleanlinessForm">
-                <div class="form-group">
-                    <label>Tingkatan:</label>
-                    <select name="tingkatan" required>
-                        <option value="">Pilih Tingkatan</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>Kelas:</label>
-                    <select name="kelas" required>
-                        <option value="">Pilih Kelas</option>
-                        <option value="BERLIAN">BERLIAN</option>
-                        <option value="DELIMA">DELIMA</option>
-                        <option value="INTAN">INTAN</option>
-                        <option value="NILAM">NILAM</option>
-                        <option value="TOPAZ">TOPAZ</option>
-                        <option value="ZAMRUD">ZAMRUD</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>Bulan:</label>
-                    <select name="bulan" required>
-                        <option value="">Pilih Bulan</option>
-                        <option value="JANUARI">JANUARI</option>
-                        <option value="FEBRUARI">FEBRUARI</option>
-                        <option value="MAC">MAC</option>
-                        <option value="APRIL">APRIL</option>
-                        <option value="MEI">MEI</option>
-                        <option value="JUN">JUN</option>
-                        <option value="JULAI">JULAI</option>
-                        <option value="OGOS">OGOS</option>
-                        <option value="SEPTEMBER">SEPTEMBER</option>
-                        <option value="OKTOBER">OKTOBER</option>
-                        <option value="NOVEMBER">NOVEMBER</option>
-                        <option value="DISEMBER">DISEMBER</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>Tarikh:</label>
-                    <input type="date" name="tarikh" required>
-                </div>
-
-                <div class="criteria">
-                    <h3>Kriteria Penilaian (1-5)</h3>
-                    <div class="rating">
-                        <label>Meja Guru - Ada Alas dan Bunga:</label>
-                        <div class="radio-group">
-                            <label><input type="radio" name="mejaGuru" value="1" required> 1</label>
-                            <label><input type="radio" name="mejaGuru" value="2"> 2</label>
-                            <label><input type="radio" name="mejaGuru" value="3"> 3</label>
-                            <label><input type="radio" name="mejaGuru" value="4"> 4</label>
-                            <label><input type="radio" name="mejaGuru" value="5"> 5</label>
-                        </div>
-                    </div>
-                    <div class="rating">
-                        <label>Meja Pelajar - Mempunyai Nama:</label>
-                        <div class="radio-group">
-                            <label><input type="radio" name="mejaPelajar" value="1" required> 1</label>
-                            <label><input type="radio" name="mejaPelajar" value="2"> 2</label>
-                            <label><input type="radio" name="mejaPelajar" value="3"> 3</label>
-                            <label><input type="radio" name="mejaPelajar" value="4"> 4</label>
-                            <label><input type="radio" name="mejaPelajar" value="5"> 5</label>
-                        </div>
-                    </div>
-                    <div class="rating">
-                        <label>Jadual Bertugas - Kreatif:</label>
-                        <div class="radio-group">
-                            <label><input type="radio" name="jadualBertugas" value="1" required> 1</label>
-                            <label><input type="radio" name="jadualBertugas" value="2"> 2</label>
-                            <label><input type="radio" name="jadualBertugas" value="3"> 3</label>
-                            <label><input type="radio" name="jadualBertugas" value="4"> 4</label>
-                            <label><input type="radio" name="jadualBertugas" value="5"> 5</label>
-                        </div>
-                    </div>
-                    <div class="rating">
-                        <label>Jam Dinding - Ada & Berfungsi:</label>
-                        <div class="radio-group">
-                            <label><input type="radio" name="jamDinding" value="1" required> 1</label>
-                            <label><input type="radio" name="jamDinding" value="2"> 2</label>
-                            <label><input type="radio" name="jamDinding" value="3"> 3</label>
-                            <label><input type="radio" name="jamDinding" value="4"> 4</label>
-                            <label><input type="radio" name="jamDinding" value="5"> 5</label>
-                        </div>
-                    </div>
-                    <div class="rating">
-                        <label>Langsir - Kemas & Bersih:</label>
-                        <div class="radio-group">
-                            <label><input type="radio" name="langsir" value="1" required> 1</label>
-                            <label><input type="radio" name="langsir" value="2"> 2</label>
-                            <label><input type="radio" name="langsir" value="3"> 3</label>
-                            <label><input type="radio" name="langsir" value="4"> 4</label>
-                            <label><input type="radio" name="langsir" value="5"> 5</label>
-                        </div>
-                    </div>
-                    <div class="rating">
-                        <label>Buku - Disusun Kemas Dalam Loker:</label>
-                        <div class="radio-group">
-                            <label><input type="radio" name="buku" value="1" required> 1</label>
-                            <label><input type="radio" name="buku" value="2"> 2</label>
-                            <label><input type="radio" name="buku" value="3"> 3</label>
-                            <label><input type="radio" name="buku" value="4"> 4</label>
-                            <label><input type="radio" name="buku" value="5"> 5</label>
-                        </div>
-                    </div>
-                    <div class="rating">
-                        <label>Mempunyai Nama Pelajar (Loker):</label>
-                        <div class="radio-group">
-                            <label><input type="radio" name="lokerNama" value="1" required> 1</label>
-                            <label><input type="radio" name="lokerNama" value="2"> 2</label>
-                            <label><input type="radio" name="lokerNama" value="3"> 3</label>
-                            <label><input type="radio" name="lokerNama" value="4"> 4</label>
-                            <label><input type="radio" name="lokerNama" value="5"> 5</label>
-                        </div>
-                    </div>
-                    <div class="rating">
-                        <label>Lantai Bersih:</label>
-                        <div class="radio-group">
-                            <label><input type="radio" name="lantai" value="1" required> 1</label>
-                            <label><input type="radio" name="lantai" value="2"> 2</label>
-                            <label><input type="radio" name="lantai" value="3"> 3</label>
-                            <label><input type="radio" name="lantai" value="4"> 4</label>
-                            <label><input type="radio" name="lantai" value="5"> 5</label>
-                        </div>
-                    </div>
-                    <div class="rating">
-                        <label>Penyapu/Penyodok - Digantung di Belakang Kelas:</label>
-                        <div class="radio-group">
-                            <label><input type="radio" name="penyapu" value="1" required> 1</label>
-                            <label><input type="radio" name="penyapu" value="2"> 2</label>
-                            <label><input type="radio" name="penyapu" value="3"> 3</label>
-                            <label><input type="radio" name="penyapu" value="4"> 4</label>
-                            <label><input type="radio" name="penyapu" value="5"> 5</label>
-                        </div>
-                    </div>
-                    <div class="rating">
-                        <label>Tong Sampah Kecil - Tiada Sampah Selepas Rehat dan Sebelum Balik:</label>
-                        <div class="radio-group">
-                            <label><input type="radio" name="tongSampah" value="1" required> 1</label>
-                            <label><input type="radio" name="tongSampah" value="2"> 2</label>
-                            <label><input type="radio" name="tongSampah" value="3"> 3</label>
-                            <label><input type="radio" name="tongSampah" value="4"> 4</label>
-                            <label><input type="radio" name="tongSampah" value="5"> 5</label>
-                        </div>
-                    </div>
-                    <div class="rating">
-                        <label>Kerusi - Kemas dan Teratur:</label>
-                        <div class="radio-group">
-                            <label><input type="radio" name="kerusi" value="1" required> 1</label>
-                            <label><input type="radio" name="kerusi" value="2"> 2</label>
-                            <label><input type="radio" name="kerusi" value="3"> 3</label>
-                            <label><input type="radio" name="kerusi" value="4"> 4</label>
-                            <label><input type="radio" name="kerusi" value="5"> 5</label>
-                        </div>
-                    </div>
-                    <div class="rating">
-                        <label>Buku di Bawah Meja - Kemas:</label>
-                        <div class="radio-group">
-                            <label><input type="radio" name="bukuBawah" value="1" required> 1</label>
-                            <label><input type="radio" name="bukuBawah" value="2"> 2</label>
-                            <label><input type="radio" name="bukuBawah" value="3"> 3</label>
-                            <label><input type="radio" name="bukuBawah" value="4"> 4</label>
-                            <label><input type="radio" name="bukuBawah" value="5"> 5</label>
-                        </div>
-                    </div>
-                    <div class="rating">
-                        <label>Lampu - Bersih:</label>
-                        <div class="radio-group">
-                            <label><input type="radio" name="lampu" value="1" required> 1</label>
-                            <label><input type="radio" name="lampu" value="2"> 2</label>
-                            <label><input type="radio" name="lampu" value="3"> 3</label>
-                            <label><input type="radio" name="lampu" value="4"> 4</label>
-                            <label><input type="radio" name="lampu" value="5"> 5</label>
-                        </div>
-                    </div>
-                    <div class="rating">
-                        <label>Kipas - Bersih:</label>
-                        <div class="radio-group">
-                            <label><input type="radio" name="kipas" value="1" required> 1</label>
-                            <label><input type="radio" name="kipas" value="2"> 2</label>
-                            <label><input type="radio" name="kipas" value="3"> 3</label>
-                            <label><input type="radio" name="kipas" value="4"> 4</label>
-                            <label><input type="radio" name="kipas" value="5"> 5</label>
-                        </div>
-                    </div>
-                    <div class="rating">
-                        <label>Papan Putih - Bersih:</label>
-                        <div class="radio-group">
-                            <label><input type="radio" name="papanPutih" value="1" required> 1</label>
-                            <label><input type="radio" name="papanPutih" value="2"> 2</label>
-                            <label><input type="radio" name="papanPutih" value="3"> 3</label>
-                            <label><input type="radio" name="papanPutih" value="4"> 4</label>
-                            <label><input type="radio" name="papanPutih" value="5"> 5</label>
-                        </div>
-                    </div>
-                    <div class="rating">
-                        <label>Pemadam White Board - Ada:</label>
-                        <div class="radio-group">
-                            <label><input type="radio" name="pemadam" value="1" required> 1</label>
-                            <label><input type="radio" name="pemadam" value="2"> 2</label>
-                            <label><input type="radio" name="pemadam" value="3"> 3</label>
-                            <label><input type="radio" name="pemadam" value="4"> 4</label>
-                            <label><input type="radio" name="pemadam" value="5"> 5</label>
-                        </div>
-                    </div>
-                    <div class="rating">
-                        <label>Tingkap - Bersih:</label>
-                        <div class="radio-group">
-                            <label><input type="radio" name="tingkap" value="1" required> 1</label>
-                            <label><input type="radio" name="tingkap" value="2"> 2</label>
-                            <label><input type="radio" name="tingkap" value="3"> 3</label>
-                            <label><input type="radio" name="tingkap" value="4"> 4</label>
-                            <label><input type="radio" name="tingkap" value="5"> 5</label>
-                        </div>
-                    </div>
-                    <div class="rating">
-                        <label>Pintu - Bersih:</label>
-                        <div class="radio-group">
-                            <label><input type="radio" name="pintu" value="1" required> 1</label>
-                            <label><input type="radio" name="pintu" value="2"> 2</label>
-                            <label><input type="radio" name="pintu" value="3"> 3</label>
-                            <label><input type="radio" name="pintu" value="4"> 4</label>
-                            <label><input type="radio" name="pintu" value="5"> 5</label>
-                        </div>
-                    </div>
-                    <div class="rating">
-                        <label>Siling - Bersih:</label>
-                        <div class="radio-group">
-                            <label><input type="radio" name="siling" value="1" required> 1</label>
-                            <label><input type="radio" name="siling" value="2"> 2</label>
-                            <label><input type="radio" name="siling" value="3"> 3</label>
-                            <label><input type="radio" name="siling" value="4"> 4</label>
-                            <label><input type="radio" name="siling" value="5"> 5</label>
-                        </div>
-                    </div>
-                    <div class="rating">
-                        <label>Dinding Kelas - Bersih:</label>
-                        <div class="radio-group">
-                            <label><input type="radio" name="dinding" value="1" required> 1</label>
-                            <label><input type="radio" name="dinding" value="2"> 2</label>
-                            <label><input type="radio" name="dinding" value="3"> 3</label>
-                            <label><input type="radio" name="dinding" value="4"> 4</label>
-                            <label><input type="radio" name="dinding" value="5"> 5</label>
-                        </div>
-                    </div>
-                    <div class="rating">
-                        <label>Mempunyai Tajuk (Softboard):</label>
-                        <div class="radio-group">
-                            <label><input type="radio" name="softboardTajuk" value="1" required> 1</label>
-                            <label><input type="radio" name="softboardTajuk" value="2"> 2</label>
-                            <label><input type="radio" name="softboardTajuk" value="3"> 3</label>
-                            <label><input type="radio" name="softboardTajuk" value="4"> 4</label>
-                            <label><input type="radio" name="softboardTajuk" value="5"> 5</label>
-                        </div>
-                    </div>
-                    <div class="rating">
-                        <label>Mengikut Pelan (Softboard):</label>
-                        <div class="radio-group">
-                            <label><input type="radio" name="softboardPelan" value="1" required> 1</label>
-                            <label><input type="radio" name="softboardPelan" value="2"> 2</label>
-                            <label><input type="radio" name="softboardPelan" value="3"> 3</label>
-                            <label><input type="radio" name="softboardPelan" value="4"> 4</label>
-                            <label><input type="radio" name="softboardPelan" value="5"> 5</label>
-                        </div>
-                    </div>
-                    <div class="rating">
-                        <label>Dihias Dengan Kreatif dan Menarik (Softboard):</label>
-                        <div class="radio-group">
-                            <label><input type="radio" name="softboardHiasan" value="1" required> 1</label>
-                            <label><input type="radio" name="softboardHiasan" value="2"> 2</label>
-                            <label><input type="radio" name="softboardHiasan" value="3"> 3</label>
-                            <label><input type="radio" name="softboardHiasan" value="4"> 4</label>
-                            <label><input type="radio" name="softboardHiasan" value="5"> 5</label>
-                        </div>
-                    </div>
-                    <div class="rating">
-                        <label>Alas Meja Pelajar:</label>
-                        <div class="radio-group">
-                            <label><input type="radio" name="alasMeja" value="1" required> 1</label>
-                            <label><input type="radio" name="alasMeja" value="2"> 2</label>
-                            <label><input type="radio" name="alasMeja" value="3"> 3</label>
-                            <label><input type="radio" name="alasMeja" value="4"> 4</label>
-                            <label><input type="radio" name="alasMeja" value="5"> 5</label>
-                        </div>
-                    </div>
-                    <div class="rating">
-                        <label>Banner Pintu:</label>
-                        <div class="radio-group">
-                            <label><input type="radio" name="banner" value="1" required> 1</label>
-                            <label><input type="radio" name="banner" value="2"> 2</label>
-                            <label><input type="radio" name="banner" value="3"> 3</label>
-                            <label><input type="radio" name="banner" value="4"> 4</label>
-                            <label><input type="radio" name="banner" value="5"> 5</label>
-                        </div>
-                    </div>
-                    <div class="rating">
-                        <label>Kata-Kata Motivasi:</label>
-                        <div class="radio-group">
-                            <label><input type="radio" name="motivasi" value="1" required> 1</label>
-                            <label><input type="radio" name="motivasi" value="2"> 2</label>
-                            <label><input type="radio" name="motivasi" value="3"> 3</label>
-                            <label><input type="radio" name="motivasi" value="4"> 4</label>
-                            <label><input type="radio" name="motivasi" value="5"> 5</label>
-                        </div>
-                    </div>
-                    <div class="rating">
-                        <label>Sudut Khas Dalam Kelas:</label>
-                        <div class="radio-group">
-                            <label><input type="radio" name="sudutKhas" value="1" required> 1</label>
-                            <label><input type="radio" name="sudutKhas" value="2"> 2</label>
-                            <label><input type="radio" name="sudutKhas" value="3"> 3</label>
-                            <label><input type="radio" name="sudutKhas" value="4"> 4</label>
-                            <label><input type="radio" name="sudutKhas" value="5"> 5</label>
-                        </div>
-                    </div>
-                    <div class="rating">
-                        <label>Koridor Kelas - Bersih & Ceria:</label>
-                        <div class="radio-group">
-                            <label><input type="radio" name="koridor" value="1" required> 1</label>
-                            <label><input type="radio" name="koridor" value="2"> 2</label>
-                            <label><input type="radio" name="koridor" value="3"> 3</label>
-                            <label><input type="radio" name="koridor" value="4"> 4</label>
-                            <label><input type="radio" name="koridor" value="5"> 5</label>
-                        </div>
-                    </div>
-                </div>
-
-                <button type="submit" id="submitBtn">Hantar</button>
+            <form id="loginForm">
+                <label for="username">ID Pengguna:</label>
+                <input type="text" id="username" required>
+                <label for="password">Kata Laluan:</label>
+                <input type="password" id="password" required>
+                <button type="submit">Log Masuk</button>
             </form>
         </div>
 
-        <!-- Analysis Section -->
-        <div id="analysis" class="section active">
-            <h2>Analisis Kebersihan Kelas</h2>
-            <div id="monthSelector" class="form-group">
-                <label>Pilih Bulan:</label>
-                <select id="analysisMonth">
-                    <option value="">Pilih Bulan</option>
+        <!-- Bahagian Borang Kebersihan -->
+        <div id="form" class="section">
+            <h2>Borang Kebersihan Kelas</h2>
+            <button id="logoutBtn">Log Keluar</button>
+            <button onclick="showAnalysis()">Analisis Kebersihan</button>
+            <form id="cleanlinessForm">
+                <label for="tingkatan">Tingkatan:</label>
+                <select id="tingkatan" name="tingkatan" required>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+
+                <label for="kelas">Kelas:</label>
+                <select id="kelas" name="kelas" required>
+                    <option value="BERLIAN">BERLIAN</option>
+                    <option value="DELIMA">DELIMA</option>
+                    <option value="INTAN">INTAN</option>
+                    <option value="NILAM">NILAM</option>
+                    <option value="TOPAZ">TOPAZ</option>
+                    <option value="ZAMRUD">ZAMRUD</option>
+                </select>
+
+                <label for="bulan">Bulan:</label>
+                <select id="bulan" name="bulan" required>
                     <option value="JANUARI">JANUARI</option>
                     <option value="FEBRUARI">FEBRUARI</option>
                     <option value="MAC">MAC</option>
@@ -387,28 +61,300 @@
                     <option value="NOVEMBER">NOVEMBER</option>
                     <option value="DISEMBER">DISEMBER</option>
                 </select>
-            </div>
 
+                <label for="tarikh">Tarikh:</label>
+                <input type="date" id="tarikh" name="tarikh" required>
+
+                <h3>Kriteria Kebersihan (Skala 1-5)</h3>
+                <div class="criteria">
+                    <label>Meja Guru:</label>
+                    <div class="radio-group">
+                        <input type="radio" name="mejaGuru" value="1" required>1
+                        <input type="radio" name="mejaGuru" value="2">2
+                        <input type="radio" name="mejaGuru" value="3">3
+                        <input type="radio" name="mejaGuru" value="4">4
+                        <input type="radio" name="mejaGuru" value="5">5
+                    </div>
+
+                    <label>Meja Pelajar:</label>
+                    <div class="radio-group">
+                        <input type="radio" name="mejaPelajar" value="1" required>1
+                        <input type="radio" name="mejaPelajar" value="2">2
+                        <input type="radio" name="mejaPelajar" value="3">3
+                        <input type="radio" name="mejaPelajar" value="4">4
+                        <input type="radio" name="mejaPelajar" value="5">5
+                    </div>
+
+                    <label>Jadual Bertugas:</label>
+                    <div class="radio-group">
+                        <input type="radio" name="jadualBertugas" value="1" required>1
+                        <input type="radio" name="jadualBertugas" value="2">2
+                        <input type="radio" name="jadualBertugas" value="3">3
+                        <input type="radio" name="jadualBertugas" value="4">4
+                        <input type="radio" name="jadualBertugas" value="5">5
+                    </div>
+
+                    <label>Jam Dinding:</label>
+                    <div class="radio-group">
+                        <input type="radio" name="jamDinding" value="1" required>1
+                        <input type="radio" name="jamDinding" value="2">2
+                        <input type="radio" name="jamDinding" value="3">3
+                        <input type="radio" name="jamDinding" value="4">4
+                        <input type="radio" name="jamDinding" value="5">5
+                    </div>
+
+                    <label>Langsir:</label>
+                    <div class="radio-group">
+                        <input type="radio" name="langsir" value="1" required>1
+                        <input type="radio" name="langsir" value="2">2
+                        <input type="radio" name="langsir" value="3">3
+                        <input type="radio" name="langsir" value="4">4
+                        <input type="radio" name="langsir" value="5">5
+                    </div>
+
+                    <label>Buku:</label>
+                    <div class="radio-group">
+                        <input type="radio" name="buku" value="1" required>1
+                        <input type="radio" name="buku" value="2">2
+                        <input type="radio" name="buku" value="3">3
+                        <input type="radio" name="buku" value="4">4
+                        <input type="radio" name="buku" value="5">5
+                    </div>
+
+                    <label>Loker Nama:</label>
+                    <div class="radio-group">
+                        <input type="radio" name="lokerNama" value="1" required>1
+                        <input type="radio" name="lokerNama" value="2">2
+                        <input type="radio" name="lokerNama" value="3">3
+                        <input type="radio" name="lokerNama" value="4">4
+                        <input type="radio" name="lokerNama" value="5">5
+                    </div>
+
+                    <label>Lantai:</label>
+                    <div class="radio-group">
+                        <input type="radio" name="lantai" value="1" required>1
+                        <input type="radio" name="lantai" value="2">2
+                        <input type="radio" name="lantai" value="3">3
+                        <input type="radio" name="lantai" value="4">4
+                        <input type="radio" name="lantai" value="5">5
+                    </div>
+
+                    <label>Penyapu:</label>
+                    <div class="radio-group">
+                        <input type="radio" name="penyapu" value="1" required>1
+                        <input type="radio" name="penyapu" value="2">2
+                        <input type="radio" name="penyapu" value="3">3
+                        <input type="radio" name="penyapu" value="4">4
+                        <input type="radio" name="penyapu" value="5">5
+                    </div>
+
+                    <label>Tong Sampah:</label>
+                    <div class="radio-group">
+                        <input type="radio" name="tongSampah" value="1" required>1
+                        <input type="radio" name="tongSampah" value="2">2
+                        <input type="radio" name="tongSampah" value="3">3
+                        <input type="radio" name="tongSampah" value="4">4
+                        <input type="radio" name="tongSampah" value="5">5
+                    </div>
+
+                    <label>Kerusi:</label>
+                    <div class="radio-group">
+                        <input type="radio" name="kerusi" value="1" required>1
+                        <input type="radio" name="kerusi" value="2">2
+                        <input type="radio" name="kerusi" value="3">3
+                        <input type="radio" name="kerusi" value="4">4
+                        <input type="radio" name="kerusi" value="5">5
+                    </div>
+
+                    <label>Buku Bawah:</label>
+                    <div class="radio-group">
+                        <input type="radio" name="bukuBawah" value="1" required>1
+                        <input type="radio" name="bukuBawah" value="2">2
+                        <input type="radio" name="bukuBawah" value="3">3
+                        <input type="radio" name="bukuBawah" value="4">4
+                        <input type="radio" name="bukuBawah" value="5">5
+                    </div>
+
+                    <label>Lampu:</label>
+                    <div class="radio-group">
+                        <input type="radio" name="lampu" value="1" required>1
+                        <input type="radio" name="lampu" value="2">2
+                        <input type="radio" name="lampu" value="3">3
+                        <input type="radio" name="lampu" value="4">4
+                        <input type="radio" name="lampu" value="5">5
+                    </div>
+
+                    <label>Kipas:</label>
+                    <div class="radio-group">
+                        <input type="radio" name="kipas" value="1" required>1
+                        <input type="radio" name="kipas" value="2">2
+                        <input type="radio" name="kipas" value="3">3
+                        <input type="radio" name="kipas" value="4">4
+                        <input type="radio" name="kipas" value="5">5
+                    </div>
+
+                    <label>Papan Putih:</label>
+                    <div class="radio-group">
+                        <input type="radio" name="papanPutih" value="1" required>1
+                        <input type="radio" name="papanPutih" value="2">2
+                        <input type="radio" name="papanPutih" value="3">3
+                        <input type="radio" name="papanPutih" value="4">4
+                        <input type="radio" name="papanPutih" value="5">5
+                    </div>
+
+                    <label>Pemadam:</label>
+                    <div class="radio-group">
+                        <input type="radio" name="pemadam" value="1" required>1
+                        <input type="radio" name="pemadam" value="2">2
+                        <input type="radio" name="pemadam" value="3">3
+                        <input type="radio" name="pemadam" value="4">4
+                        <input type="radio" name="pemadam" value="5">5
+                    </div>
+
+                    <label>Tingkap:</label>
+                    <div class="radio-group">
+                        <input type="radio" name="tingkap" value="1" required>1
+                        <input type="radio" name="tingkap" value="2">2
+                        <input type="radio" name="tingkap" value="3">3
+                        <input type="radio" name="tingkap" value="4">4
+                        <input type="radio" name="tingkap" value="5">5
+                    </div>
+
+                    <label>Pintu:</label>
+                    <div class="radio-group">
+                        <input type="radio" name="pintu" value="1" required>1
+                        <input type="radio" name="pintu" value="2">2
+                        <input type="radio" name="pintu" value="3">3
+                        <input type="radio" name="pintu" value="4">4
+                        <input type="radio" name="pintu" value="5">5
+                    </div>
+
+                    <label>Siling:</label>
+                    <div class="radio-group">
+                        <input type="radio" name="siling" value="1" required>1
+                        <input type="radio" name="siling" value="2">2
+                        <input type="radio" name="siling" value="3">3
+                        <input type="radio" name="siling" value="4">4
+                        <input type="radio" name="siling" value="5">5
+                    </div>
+
+                    <label>Dinding:</label>
+                    <div class="radio-group">
+                        <input type="radio" name="dinding" value="1" required>1
+                        <input type="radio" name="dinding" value="2">2
+                        <input type="radio" name="dinding" value="3">3
+                        <input type="radio" name="dinding" value="4">4
+                        <input type="radio" name="dinding" value="5">5
+                    </div>
+
+                    <label>Softboard Tajuk:</label>
+                    <div class="radio-group">
+                        <input type="radio" name="softboardTajuk" value="1" required>1
+                        <input type="radio" name="softboardTajuk" value="2">2
+                        <input type="radio" name="softboardTajuk" value="3">3
+                        <input type="radio" name="softboardTajuk" value="4">4
+                        <input type="radio" name="softboardTajuk" value="5">5
+                    </div>
+
+                    <label>Softboard Pelan:</label>
+                    <div class="radio-group">
+                        <input type="radio" name="softboardPelan" value="1" required>1
+                        <input type="radio" name="softboardPelan" value="2">2
+                        <input type="radio" name="softboardPelan" value="3">3
+                        <input type="radio" name="softboardPelan" value="4">4
+                        <input type="radio" name="softboardPelan" value="5">5
+                    </div>
+
+                    <label>Softboard Hiasan:</label>
+                    <div class="radio-group">
+                        <input type="radio" name="softboardHiasan" value="1" required>1
+                        <input type="radio" name="softboardHiasan" value="2">2
+                        <input type="radio" name="softboardHiasan" value="3">3
+                        <input type="radio" name="softboardHiasan" value="4">4
+                        <input type="radio" name="softboardHiasan" value="5">5
+                    </div>
+
+                    <label>Alas Meja:</label>
+                    <div class="radio-group">
+                        <input type="radio" name="alasMeja" value="1" required>1
+                        <input type="radio" name="alasMeja" value="2">2
+                        <input type="radio" name="alasMeja" value="3">3
+                        <input type="radio" name="alasMeja" value="4">4
+                        <input type="radio" name="alasMeja" value="5">5
+                    </div>
+
+                    <label>Banner:</label>
+                    <div class="radio-group">
+                        <input type="radio" name="banner" value="1" required>1
+                        <input type="radio" name="banner" value="2">2
+                        <input type="radio" name="banner" value="3">3
+                        <input type="radio" name="banner" value="4">4
+                        <input type="radio" name="banner" value="5">5
+                    </div>
+
+                    <label>Motivasi:</label>
+                    <div class="radio-group">
+                        <input type="radio" name="motivasi" value="1" required>1
+                        <input type="radio" name="motivasi" value="2">2
+                        <input type="radio" name="motivasi" value="3">3
+                        <input type="radio" name="motivasi" value="4">4
+                        <input type="radio" name="motivasi" value="5">5
+                    </div>
+
+                    <label>Sudut Khas:</label>
+                    <div class="radio-group">
+                        <input type="radio" name="sudutKhas" value="1" required>1
+                        <input type="radio" name="sudutKhas" value="2">2
+                        <input type="radio" name="sudutKhas" value="3">3
+                        <input type="radio" name="sudutKhas" value="4">4
+                        <input type="radio" name="sudutKhas" value="5">5
+                    </div>
+
+                    <label>Koridor:</label>
+                    <div class="radio-group">
+                        <input type="radio" name="koridor" value="1" required>1
+                        <input type="radio" name="koridor" value="2">2
+                        <input type="radio" name="koridor" value="3">3
+                        <input type="radio" name="koridor" value="4">4
+                        <input type="radio" name="koridor" value="5">5
+                    </div>
+                </div>
+
+                <button type="submit" id="submitBtn">Hantar</button>
+            </form>
+        </div>
+
+        <!-- Bahagian Analisis -->
+        <div id="analysis" class="section">
+            <h2>Analisis Kebersihan</h2>
+            <button onclick="showForm()">Kembali ke Borang</button>
+            <label for="analysisMonth">Pilih Bulan:</label>
+            <select id="analysisMonth">
+                <option value="JANUARI">JANUARI</option>
+                <option value="FEBRUARI">FEBRUARI</option>
+                <option value="MAC">MAC</option>
+                <option value="APRIL">APRIL</option>
+                <option value="MEI">MEI</option>
+                <option value="JUN">JUN</option>
+                <option value="JULAI">JULAI</option>
+                <option value="OGOS">OGOS</option>
+                <option value="SEPTEMBER">SEPTEMBER</option>
+                <option value="OKTOBER">OKTOBER</option>
+                <option value="NOVEMBER">NOVEMBER</option>
+                <option value="DISEMBER">DISEMBER</option>
+            </select>
             <div id="tables"></div>
-            <div id="charts">
-                <div class="chart-container"><canvas id="chart1"></canvas></div>
-                <div class="chart-container"><canvas id="chart2"></canvas></div>
-                <div class="chart-container"><canvas id="chart3"></canvas></div>
-                <div class="chart-container"><canvas id="chart4"></canvas></div>
-                <div class="chart-container"><canvas id="chart5"></canvas></div>
+            <div class="charts">
+                <canvas id="chart1"></canvas>
+                <canvas id="chart2"></canvas>
+                <canvas id="chart3"></canvas>
+                <canvas id="chart4"></canvas>
+                <canvas id="chart5"></canvas>
             </div>
-            <div id="status">
-                <h3>Status Rekod (Mac 2025)</h3>
-                <div id="recorded"></div>
-                <div id="notRecorded"></div>
-            </div>
+            <div id="recorded"></div>
+            <div id="notRecorded"></div>
         </div>
     </div>
-
-    <footer>
-        <p>© Amin Ramli 2025</p>
-    </footer>
-
     <script src="script.js"></script>
 </body>
 </html>
