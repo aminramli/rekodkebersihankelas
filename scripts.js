@@ -23,7 +23,7 @@ const displayCriteriaList = [
 ];
 
 const maxScore = criteriaList.length * 5; // 28 criteria * 5 = 140
-const scriptUrl = "https://script.google.com/macros/s/AKfycbwuVaQQPzPTKoqJM6-ZAakkd_YezwlZdhkAiWtc2mQ/dev";
+const scriptUrl = "https://script.google.com/macros/s/AKfycbxkSD06UlS9ysCAB1Pk3W3R-b462Rz5_RPQHKnrUTpR-EV-HKJN9cqsfS071i4wKiIn/exec";
 
 // Page Navigation
 const loginPage = document.getElementById("loginPage");
