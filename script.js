@@ -1,4 +1,4 @@
-const APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzl4CHEkx1TsseThtCPW-22rXlzEIFg7sVSo58YccXuSQhqgsJPDS7ZC8zw2kS7oX5w/exec';
+const APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwzgiOfEdY7cp68frcTXwPZ_mEmR9Vg9qEERHR0wvIFtP7FLrrmqiQzFt7_bsCINi_5/exec';
 const CRITERIA_COUNT = 28;
 let charts = {};
 let isLoggedIn = false;
@@ -46,7 +46,7 @@ function showAnalysis() {
     fetchAnalysisData();
 }
 
-document.getElementById('cleanlinessForm').addEventListener('submit', async function(e) {
+document.getElementById('cleanlinessForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const submitBtn = document.getElementById('submitBtn');
     submitBtn.disabled = true;
@@ -63,46 +63,51 @@ document.getElementById('cleanlinessForm').addEventListener('submit', async func
     data.total = total;
     data.peratusan = ((total / (CRITERIA_COUNT * 5)) * 100).toFixed(2);
 
-    try {
-        const response = await fetch(APP_SCRIPT_URL, {
-            method: 'POST',
-            body: JSON.stringify(data),
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            mode: 'no-cors' // Guna 'no-cors' kerana Apps Script tidak menyokong respons CORS penuh
-        });
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', APP_SCRIPT_URL, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
 
-        // Dengan 'no-cors', kita tidak boleh membaca response.text() secara langsung,
-        // jadi kita anggap kejayaan jika tiada ralat dilemparkan
-        alert('Data berjaya disimpan!');
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                alert('Data berjaya disimpan!');
+                submitBtn.disabled = false;
+                document.getElementById('cleanlinessForm').reset();
+            } else {
+                alert('Gagal menyimpan data: ' + xhr.statusText + ' (Status: ' + xhr.status + ')');
+                submitBtn.disabled = false;
+            }
+        }
+    };
+
+    xhr.onerror = function() {
+        alert('Ralat berlaku semasa menghantar data. Sila semak sambungan internet atau URL Apps Script.');
         submitBtn.disabled = false;
-        this.reset();
-    } catch (error) {
-        console.error('Fetch Error:', error);
-        alert('Ralat berlaku semasa menghantar data: ' + error.message);
-        submitBtn.disabled = false;
-    }
+    };
+
+    xhr.send(JSON.stringify(data));
 });
 
 function fetchAnalysisData() {
-    fetch(APP_SCRIPT_URL, {
-        method: 'GET',
-        mode: 'cors'
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', APP_SCRIPT_URL, true);
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                const data = JSON.parse(xhr.responseText);
+                processAnalysis(data);
+            } else {
+                alert('Gagal mengambil data analisis: ' + xhr.statusText + ' (Status: ' + xhr.status + ')');
+            }
         }
-        return response.json();
-    })
-    .then(data => {
-        processAnalysis(data);
-    })
-    .catch(error => {
-        console.error('Error fetching data:', error);
-        alert('Ralat mengambil data analisis: ' + error.message);
-    });
+    };
+
+    xhr.onerror = function() {
+        alert('Ralat mengambil data analisis. Sila semak sambungan internet atau URL Apps Script.');
+    };
+
+    xhr.send();
 }
 
 function processAnalysis(data) {
