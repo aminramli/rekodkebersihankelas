@@ -1,9 +1,11 @@
-const APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz8zm8VWCWHiWC6CtVvhThU76ok0pOGp-Iicucc04TzkqdMhYx0kZsvuwrakcAG45BQ/exec';
+const APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxzKMD71rI8MvTKeF0KO0_8Sz5LHXuN5oCMqEHaW7ilY1ZuxQgzJGZdR7X_vis9vOg/exec';
 const CRITERIA_COUNT = 28;
 let charts = {};
 let isLoggedIn = false;
 
-function login() {
+// Log Masuk
+document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault();
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
     if (username === 'mrsmsas' && password === '1234') {
@@ -13,8 +15,9 @@ function login() {
     } else {
         alert('ID atau kata laluan salah!');
     }
-}
+});
 
+// Log Keluar
 function logout() {
     isLoggedIn = false;
     document.getElementById('logoutBtn').style.display = 'none';
@@ -23,12 +26,14 @@ function logout() {
     showLogin();
 }
 
+// Tunjukkan Bahagian Log Masuk
 function showLogin() {
     document.getElementById('login').classList.add('active');
     document.getElementById('form').classList.remove('active');
     document.getElementById('analysis').classList.remove('active');
 }
 
+// Tunjukkan Bahagian Borang
 function showForm() {
     if (!isLoggedIn) {
         showLogin();
@@ -39,13 +44,19 @@ function showForm() {
     document.getElementById('analysis').classList.remove('active');
 }
 
+// Tunjukkan Bahagian Analisis
 function showAnalysis() {
+    if (!isLoggedIn) {
+        showLogin();
+        return;
+    }
     document.getElementById('analysis').classList.add('active');
     document.getElementById('form').classList.remove('active');
     document.getElementById('login').classList.remove('active');
     fetchAnalysisData();
 }
 
+// Hantar Borang
 document.getElementById('cleanlinessForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const submitBtn = document.getElementById('submitBtn');
@@ -94,6 +105,7 @@ document.getElementById('cleanlinessForm').addEventListener('submit', function(e
     xhr.send(JSON.stringify(data));
 });
 
+// Ambil Data Analisis
 function fetchAnalysisData() {
     const xhr = new XMLHttpRequest();
     xhr.open('GET', APP_SCRIPT_URL, true);
@@ -126,6 +138,7 @@ function fetchAnalysisData() {
     xhr.send();
 }
 
+// Proses Data Analisis
 function processAnalysis(data) {
     const months = ['JANUARI', 'FEBRUARI', 'MAC', 'APRIL', 'MEI', 'JUN', 'JULAI', 'OGOS', 'SEPTEMBER', 'OKTOBER', 'NOVEMBER', 'DISEMBER'];
     const classes = ['BERLIAN', 'DELIMA', 'INTAN', 'NILAM', 'TOPAZ', 'ZAMRUD'];
@@ -209,3 +222,6 @@ function processAnalysis(data) {
 }
 
 document.getElementById('analysisMonth').addEventListener('change', fetchAnalysisData);
+
+// Tunjukkan log masuk pada permulaan
+showLogin();
