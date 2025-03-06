@@ -185,7 +185,7 @@ function loadAnalysisData() {
         .then(response => response.json())
         .then(data => {
             const monthFilter = document.getElementById("monthFilter").value;
-            const filteredData = monthFilter ? data.filter(row => row.bulan === monthFilter) : data;
+            const filteredData = monthFilter ? data.filter(row => row.bulan.toUpperCase() === monthFilter.toUpperCase()) : data;
 
             // Ranking Tables
             const tablesContainer = document.getElementById("rankingTables");
@@ -193,7 +193,7 @@ function loadAnalysisData() {
             for (let tingkatan = 1; tingkatan <= 5; tingkatan++) {
                 const tingkatanData = filteredData
                     .filter(row => row.tingkatan === String(tingkatan))
-                    .sort((a, b) => b.jumlah - a.jumlah);
+                    .sort((a, b) => parseInt(b.jumlah) - parseInt(a.jumlah)); // Pastikan jumlah diubah ke integer untuk pengurutan
                 tablesContainer.innerHTML += `
                     <h3>Tingkatan ${tingkatan}</h3>
                     <table>
@@ -210,10 +210,14 @@ function loadAnalysisData() {
             const colors = ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF", "#FF9F40"];
             for (let tingkatan = 1; tingkatan <= 5; tingkatan++) {
                 const ctx = document.getElementById(`chart${tingkatan}`).getContext("2d");
+                // Kosongkan carta lama jika ada
+                if (window[`chart${tingkatan}`]) {
+                    window[`chart${tingkatan}`].destroy();
+                }
                 const datasets = classes.map((kelas, index) => {
                     const classData = data.filter(row => row.tingkatan === String(tingkatan) && row.kelas === kelas);
                     const monthlyScores = ["JANUARI", "FEBRUARI", "MAC", "APRIL", "MEI", "JUN", "JULAI", "OGOS", "SEPTEMBER", "OKTOBER", "NOVEMBER", "DISEMBER"].map(month => {
-                        const row = classData.find(r => r.bulan === month);
+                        const row = classData.find(r => r.bulan.toUpperCase() === month.toUpperCase());
                         return row ? parseInt(row.jumlah) : 0;
                     });
                     return {
@@ -224,7 +228,7 @@ function loadAnalysisData() {
                         tension: 0.1
                     };
                 });
-                new Chart(ctx, {
+                window[`chart${tingkatan}`] = new Chart(ctx, {
                     type: "line",
                     data: {
                         labels: ["JANUARI", "FEBRUARI", "MAC", "APRIL", "MEI", "JUN", "JULAI", "OGOS", "SEPTEMBER", "OKTOBER", "NOVEMBER", "DISEMBER"],
