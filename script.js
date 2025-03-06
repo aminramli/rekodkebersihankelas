@@ -95,8 +95,13 @@ function fetchAnalysisData() {
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
             if (xhr.status === 200) {
-                const data = JSON.parse(xhr.responseText);
-                processAnalysis(data);
+                try {
+                    const data = JSON.parse(xhr.responseText);
+                    console.log('Data dari Google Sheet:', data); // Log data untuk debugging
+                    processAnalysis(data);
+                } catch (e) {
+                    alert('Ralat memproses data dari Google Sheet: ' + e.message);
+                }
             } else {
                 alert('Gagal mengambil data analisis: ' + xhr.statusText + ' (Status: ' + xhr.status + ')');
             }
@@ -116,29 +121,39 @@ function processAnalysis(data) {
     const currentMonth = 'MAC';
 
     const monthFilter = document.getElementById('analysisMonth').value || currentMonth;
+    console.log('Bulan yang dipilih:', monthFilter); // Log bulan untuk debugging
     const tablesDiv = document.getElementById('tables');
     tablesDiv.innerHTML = '';
 
-    for (let tingkatan = 1; tingkatan <= 5; tingkatan++) {
-        let tableData = data
-            .filter(row => row[1] === tingkatan.toString() && row[3] === monthFilter)
-            .map(row => ({
-                kelas: row[2],
-                total: row[32],
-                peratusan: row[33]
-            }))
-            .sort((a, b) => b.total - a.total);
+    // Penapis data berdasarkan bulan
+    const filteredData = data.filter(row => row[3] === monthFilter); // Indeks 3 adalah 'bulan'
+    console.log('Data ditapis untuk bulan:', filteredData); // Log data ditapis
 
-        let table = `
-            <h3>Tingkatan ${tingkatan}</h3>
-            <table>
-                <tr><th>Kelas</th><th>Jumlah</th><th>Peratusan</th></tr>
-                ${tableData.map(row => `<tr><td>${row.kelas}</td><td>${row.total}</td><td>${row.peratusan}%</td></tr>`).join('')}
-            </table>
-        `;
-        tablesDiv.innerHTML += table;
+    if (filteredData.length === 0) {
+        tablesDiv.innerHTML = '<p>Tiada data untuk bulan yang dipilih.</p>';
+    } else {
+        for (let tingkatan = 1; tingkatan <= 5; tingkatan++) {
+            let tableData = filteredData
+                .filter(row => row[1] === tingkatan.toString()) // Indeks 1 adalah 'tingkatan'
+                .map(row => ({
+                    kelas: row[2],       // Indeks 2 adalah 'kelas'
+                    total: row[32],      // Indeks 32 adalah 'total'
+                    peratusan: row[33]   // Indeks 33 adalah 'peratusan'
+                }))
+                .sort((a, b) => b.total - a.total);
+
+            let table = `
+                <h3>Tingkatan ${tingkatan}</h3>
+                <table>
+                    <tr><th>Kelas</th><th>Jumlah</th><th>Peratusan</th></tr>
+                    ${tableData.length > 0 ? tableData.map(row => `<tr><td>${row.kelas}</td><td>${row.total}</td><td>${row.peratusan}%</td></tr>`).join('') : '<tr><td colspan="3">Tiada data</td></tr>'}
+                </table>
+            `;
+            tablesDiv.innerHTML += table;
+        }
     }
 
+    // Carta
     for (let tingkatan = 1; tingkatan <= 5; tingkatan++) {
         const chartData = {
             labels: months,
@@ -146,7 +161,7 @@ function processAnalysis(data) {
                 label: kelas,
                 data: months.map(month => {
                     const entry = data.find(row => row[1] === tingkatan.toString() && row[2] === kelas && row[3] === month);
-                    return entry ? entry[32] : 0;
+                    return entry ? entry[32] : 0; // Indeks 32 adalah 'total'
                 }),
                 borderColor: `hsl(${Math.random() * 360}, 70%, 50%)`,
                 fill: false
@@ -170,6 +185,7 @@ function processAnalysis(data) {
         });
     }
 
+    // Status Rekod
     const recorded = new Set();
     const allClasses = [];
     for (let t = 1; t <= 5; t++) {
