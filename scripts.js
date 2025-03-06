@@ -182,10 +182,14 @@ document.getElementById("cleanlinessForm").addEventListener("submit", (e) => {
 // Analysis Page
 function loadAnalysisData() {
     fetch(scriptUrl, { method: "GET" })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) throw new Error("Network response was not ok: " + response.status);
+            return response.json();
+        })
         .then(data => {
-            const monthFilter = document.getElementById("monthFilter").value;
-            const filteredData = monthFilter ? data.filter(row => row.bulan.toUpperCase() === monthFilter.toUpperCase()) : data;
+            if (!Array.isArray(data)) throw new Error("Data is not an array");
+            const monthFilter = document.getElementById("monthFilter").value.toUpperCase();
+            const filteredData = monthFilter ? data.filter(row => row.bulan.toUpperCase() === monthFilter) : data;
 
             // Ranking Tables
             const tablesContainer = document.getElementById("rankingTables");
@@ -193,14 +197,16 @@ function loadAnalysisData() {
             for (let tingkatan = 1; tingkatan <= 5; tingkatan++) {
                 const tingkatanData = filteredData
                     .filter(row => row.tingkatan === String(tingkatan))
-                    .sort((a, b) => parseInt(b.jumlah) - parseInt(a.jumlah)); // Pastikan jumlah diubah ke integer untuk pengurutan
+                    .sort((a, b) => parseInt(b.jumlah) - parseInt(a.jumlah));
                 tablesContainer.innerHTML += `
                     <h3>Tingkatan ${tingkatan}</h3>
                     <table>
                         <tr><th>Kelas</th><th>Jumlah</th><th>Peratusan</th></tr>
-                        ${tingkatanData.map(row => `
-                            <tr><td>${row.kelas}</td><td>${row.jumlah}</td><td>${row.peratusan}</td></tr>
-                        `).join("")}
+                        ${tingkatanData.length > 0 
+                            ? tingkatanData.map(row => `
+                                <tr><td>${row.kelas}</td><td>${row.jumlah}</td><td>${row.peratusan}</td></tr>
+                            `).join("")
+                            : "<tr><td colspan='3'>Tiada data untuk bulan ini</td></tr>"}
                     </table>
                 `;
             }
@@ -210,14 +216,13 @@ function loadAnalysisData() {
             const colors = ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF", "#FF9F40"];
             for (let tingkatan = 1; tingkatan <= 5; tingkatan++) {
                 const ctx = document.getElementById(`chart${tingkatan}`).getContext("2d");
-                // Kosongkan carta lama jika ada
                 if (window[`chart${tingkatan}`]) {
                     window[`chart${tingkatan}`].destroy();
                 }
                 const datasets = classes.map((kelas, index) => {
                     const classData = data.filter(row => row.tingkatan === String(tingkatan) && row.kelas === kelas);
                     const monthlyScores = ["JANUARI", "FEBRUARI", "MAC", "APRIL", "MEI", "JUN", "JULAI", "OGOS", "SEPTEMBER", "OKTOBER", "NOVEMBER", "DISEMBER"].map(month => {
-                        const row = classData.find(r => r.bulan.toUpperCase() === month.toUpperCase());
+                        const row = classData.find(r => r.bulan.toUpperCase() === month);
                         return row ? parseInt(row.jumlah) : 0;
                     });
                     return {
@@ -246,19 +251,26 @@ function loadAnalysisData() {
                 });
             }
         })
-        .catch(error => console.error("Error loading analysis data:", error));
+        .catch(error => {
+            console.error("Error loading analysis data:", error);
+            document.getElementById("rankingTables").innerHTML = "<p>Ralat memuat data analisis: " + error.message + "</p>";
+        });
 }
 
 // Status Page
 function loadStatusData() {
     fetch(scriptUrl, { method: "GET" })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) throw new Error("Network response was not ok: " + response.status);
+            return response.json();
+        })
         .then(data => {
+            if (!Array.isArray(data)) throw new Error("Data is not an array");
             const recordStatus = document.getElementById("recordStatus");
             recordStatus.innerHTML = "";
             const months = ["JANUARI", "FEBRUARI", "MAC", "APRIL", "MEI", "JUN", "JULAI", "OGOS", "SEPTEMBER", "OKTOBER", "NOVEMBER", "DISEMBER"];
             months.forEach(month => {
-                const recorded = data.filter(row => row.bulan === month).map(row => `${row.tingkatan}-${row.kelas}`);
+                const recorded = data.filter(row => row.bulan.toUpperCase() === month.toUpperCase()).map(row => `${row.tingkatan}-${row.kelas}`);
                 recordStatus.innerHTML += `
                     <p>${month}:</p>
                     <ul>
@@ -269,10 +281,11 @@ function loadStatusData() {
                 `;
             });
         })
-        .catch(error => console.error("Error loading status data:", error));
+        .catch(error => {
+            console.error("Error loading status data:", error);
+            document.getElementById("recordStatus").innerHTML = "<p>Ralat memuat data status: " + error.message + "</p>";
+        });
 }
-
-document.getElementById("monthFilter").addEventListener("change", loadAnalysisData);
 
 // Show Analysis Page as default without login
 showPage(analysisPage);
