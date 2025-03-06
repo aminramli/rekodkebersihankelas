@@ -1,4 +1,16 @@
 const criteriaList = [
+    "MejaGuruAdaAlasdanBunga", "MejaPelajarMempunyaiNama", "JadualBertugasKreatif",
+    "JamDindingAdaBerfungsi", "LangsirKemasBersih", "BukuDisusunKemasDalamLoker",
+    "MempunyaiNamaPelajarLoker", "LantaiBersih", "PenyapuPenyodokDigantungdiBelakangKelas",
+    "TongSampahKecilTiadaSampahSelepasRehatdanSebelumBalik", "KerusiKemasdanTeratur",
+    "BukudiBawahMejaKemas", "LampuBersih", "KipasBersih", "PapanPutihBersih",
+    "PemadamWhiteBoardAda", "TingkapBersih", "PintuBersih", "SilingBersih",
+    "DindingKelasBersih", "MempunyaiTajukSoftboard", "MengikutPelanSoftboard",
+    "DihiasDenganKreatifdanMenarikSoftboard", "AlasMejaPelajar", "BannerPintu",
+    "KataKataMotivasi", "SudutKhasDalamKelas", "KoridorKelasBersihCeria"
+];
+
+const displayCriteriaList = [
     "Meja Guru - Ada Alas dan Bunga", "Meja Pelajar - Mempunyai Nama", "Jadual Bertugas - Kreatif",
     "Jam Dinding - Ada & Berfungsi", "Langsir - Kemas & Bersih", "Buku - Disusun Kemas Dalam Loker",
     "Mempunyai Nama Pelajar (Loker)", "Lantai Bersih", "Penyapu/Penyodok - Digantung di Belakang Kelas",
@@ -22,9 +34,16 @@ const formBtn = document.getElementById("formBtn");
 
 analysisBtn.addEventListener("click", () => {
     showPage(analysisPage);
+    analysisBtn.classList.add("active");
+    formBtn.classList.remove("active");
     loadAnalysisData();
 });
-formBtn.addEventListener("click", () => showPage(loginPage));
+
+formBtn.addEventListener("click", () => {
+    showPage(loginPage);
+    formBtn.classList.add("active");
+    analysisBtn.classList.remove("active");
+});
 
 // Login Logic
 document.getElementById("loginSubmit").addEventListener("click", () => {
@@ -33,17 +52,25 @@ document.getElementById("loginSubmit").addEventListener("click", () => {
     if (id === "mrsmsas" && password === "1234") {
         showPage(formPage);
         document.getElementById("logoutBtn").classList.remove("hidden");
+        formBtn.classList.add("active");
+        analysisBtn.classList.remove("active");
     } else {
         document.getElementById("loginError").textContent = "ID atau Kata Laluan Salah!";
     }
 });
 
 document.getElementById("logoutBtn").addEventListener("click", () => {
-    showPage(loginPage);
+    showPage(analysisPage);
     document.getElementById("logoutBtn").classList.add("hidden");
     document.getElementById("loginId").value = "";
     document.getElementById("loginPassword").value = "";
     document.getElementById("loginError").textContent = "";
+    document.getElementById("cleanlinessForm").reset();
+    document.getElementById("totalScore").textContent = "0";
+    document.getElementById("percentageScore").textContent = "0%";
+    analysisBtn.classList.add("active");
+    formBtn.classList.remove("active");
+    loadAnalysisData();
 });
 
 function showPage(page) {
@@ -55,7 +82,7 @@ function showPage(page) {
 
 // Form Setup
 const criteriaContainer = document.getElementById("criteriaList");
-criteriaList.forEach((criterion, index) => {
+displayCriteriaList.forEach((criterion, index) => {
     const div = document.createElement("div");
     div.classList.add("criteria");
     div.innerHTML = `
@@ -98,17 +125,25 @@ document.getElementById("cleanlinessForm").addEventListener("submit", (e) => {
 
     criteriaList.forEach((criterion, index) => {
         const selected = document.querySelector(`input[name="criteria${index}"]:checked`);
-        formData[criterion.replace(/[^a-zA-Z0-9]/g, "")] = selected ? selected.value : "0";
+        formData[criterion] = selected ? selected.value : "0";
     });
 
     fetch(scriptUrl, {
         method: "POST",
         body: JSON.stringify(formData),
-        headers: { "Content-Type": "application/json" }
+        headers: { "Content-Type": "application/json" },
+        mode: "cors"
     })
     .then(response => response.text())
     .then(result => {
-        alert(result === "Success" ? "Data berjaya dihantar!" : "Ralat: " + result);
+        if (result === "Success") {
+            alert("Data berjaya dihantar!");
+            document.getElementById("cleanlinessForm").reset();
+            document.getElementById("totalScore").textContent = "0";
+            document.getElementById("percentageScore").textContent = "0%";
+        } else {
+            alert("Ralat: " + result);
+        }
         submitBtn.disabled = false;
     })
     .catch(error => {
@@ -119,7 +154,7 @@ document.getElementById("cleanlinessForm").addEventListener("submit", (e) => {
 
 // Analysis Page
 function loadAnalysisData() {
-    fetch(scriptUrl)
+    fetch(scriptUrl, { method: "GET" })
         .then(response => response.json())
         .then(data => {
             const monthFilter = document.getElementById("monthFilter").value;
@@ -194,4 +229,5 @@ function loadAnalysisData() {
 
 document.getElementById("monthFilter").addEventListener("change", loadAnalysisData);
 showPage(analysisPage); // Default page
+analysisBtn.classList.add("active");
 loadAnalysisData();
