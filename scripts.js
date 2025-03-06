@@ -189,7 +189,7 @@ function loadAnalysisData() {
         .then(data => {
             if (!Array.isArray(data)) throw new Error("Data is not an array");
             const monthFilter = document.getElementById("monthFilter").value.toUpperCase();
-            const filteredData = monthFilter ? data.filter(row => row.bulan.toUpperCase() === monthFilter) : data;
+            const filteredData = monthFilter ? data.filter(row => (row.bulan || "").toUpperCase() === monthFilter) : data;
 
             // Ranking Tables
             const tablesContainer = document.getElementById("rankingTables");
@@ -197,14 +197,14 @@ function loadAnalysisData() {
             for (let tingkatan = 1; tingkatan <= 5; tingkatan++) {
                 const tingkatanData = filteredData
                     .filter(row => row.tingkatan === String(tingkatan))
-                    .sort((a, b) => parseInt(b.jumlah) - parseInt(a.jumlah));
+                    .sort((a, b) => parseInt(b.jumlah || 0) - parseInt(a.jumlah || 0));
                 tablesContainer.innerHTML += `
                     <h3>Tingkatan ${tingkatan}</h3>
                     <table>
                         <tr><th>Kelas</th><th>Jumlah</th><th>Peratusan</th></tr>
                         ${tingkatanData.length > 0 
                             ? tingkatanData.map(row => `
-                                <tr><td>${row.kelas}</td><td>${row.jumlah}</td><td>${row.peratusan}</td></tr>
+                                <tr><td>${row.kelas || "N/A"}</td><td>${row.jumlah || "0"}</td><td>${row.peratusan || "0%"}</td></tr>
                             `).join("")
                             : "<tr><td colspan='3'>Tiada data untuk bulan ini</td></tr>"}
                     </table>
@@ -222,8 +222,8 @@ function loadAnalysisData() {
                 const datasets = classes.map((kelas, index) => {
                     const classData = data.filter(row => row.tingkatan === String(tingkatan) && row.kelas === kelas);
                     const monthlyScores = ["JANUARI", "FEBRUARI", "MAC", "APRIL", "MEI", "JUN", "JULAI", "OGOS", "SEPTEMBER", "OKTOBER", "NOVEMBER", "DISEMBER"].map(month => {
-                        const row = classData.find(r => r.bulan.toUpperCase() === month);
-                        return row ? parseInt(row.jumlah) : 0;
+                        const row = classData.find(r => (r.bulan || "").toUpperCase() === month);
+                        return row ? parseInt(row.jumlah || 0) : 0;
                     });
                     return {
                         label: kelas,
@@ -270,7 +270,7 @@ function loadStatusData() {
             recordStatus.innerHTML = "";
             const months = ["JANUARI", "FEBRUARI", "MAC", "APRIL", "MEI", "JUN", "JULAI", "OGOS", "SEPTEMBER", "OKTOBER", "NOVEMBER", "DISEMBER"];
             months.forEach(month => {
-                const recorded = data.filter(row => row.bulan.toUpperCase() === month.toUpperCase()).map(row => `${row.tingkatan}-${row.kelas}`);
+                const recorded = data.filter(row => (row.bulan || "").toUpperCase() === month).map(row => `${row.tingkatan}-${row.kelas || "N/A"}`);
                 recordStatus.innerHTML += `
                     <p>${month}:</p>
                     <ul>
@@ -286,6 +286,8 @@ function loadStatusData() {
             document.getElementById("recordStatus").innerHTML = "<p>Ralat memuat data status: " + error.message + "</p>";
         });
 }
+
+document.getElementById("monthFilter").addEventListener("change", loadAnalysisData);
 
 // Show Analysis Page as default without login
 showPage(analysisPage);
