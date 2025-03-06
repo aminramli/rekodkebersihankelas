@@ -1,4 +1,4 @@
-const APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyDHgNzgKQV-t5fc6jbkLXRp54dIlKvSgXyEfUI7WPcMemoDj5VEAyVb6_nR0jg3T6l/exec';
+const APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz8zm8VWCWHiWC6CtVvhThU76ok0pOGp-Iicucc04TzkqdMhYx0kZsvuwrakcAG45BQ/exec';
 const CRITERIA_COUNT = 28;
 let charts = {};
 let isLoggedIn = false;
@@ -137,8 +137,7 @@ function processAnalysis(data) {
     const tablesDiv = document.getElementById('tables');
     tablesDiv.innerHTML = '';
 
-    // Penapis data berdasarkan bulan (indeks 3 kerana TIMESTAMP di 0)
-    const filteredData = data.filter(row => String(row[3]).toUpperCase() === monthFilter);
+    const filteredData = data.filter(row => String(row[3]).toUpperCase() === monthFilter); // Indeks 3 adalah 'bulan'
     console.log('Data ditapis untuk bulan:', filteredData);
 
     if (filteredData.length === 0) {
@@ -149,8 +148,8 @@ function processAnalysis(data) {
                 .filter(row => String(row[1]) === String(tingkatan)) // Indeks 1 adalah 'tingkatan'
                 .map(row => ({
                     kelas: row[2],       // Indeks 2 adalah 'kelas'
-                    total: row[33],      // Indeks 33 adalah 'total'
-                    peratusan: row[34]   // Indeks 34 adalah 'peratusan'
+                    total: row[33],      // Indeks 33 adalah 'JUMLAH'
+                    peratusan: row[34]   // Indeks 34 adalah 'PERATUSAN'
                 }))
                 .sort((a, b) => b.total - a.total);
 
@@ -165,7 +164,6 @@ function processAnalysis(data) {
         }
     }
 
-    // Carta
     for (let tingkatan = 1; tingkatan <= 5; tingkatan++) {
         const chartData = {
             labels: months,
@@ -173,7 +171,7 @@ function processAnalysis(data) {
                 label: kelas,
                 data: months.map(month => {
                     const entry = data.find(row => String(row[1]) === String(tingkatan) && row[2] === kelas && String(row[3]).toUpperCase() === month);
-                    return entry ? entry[33] : 0; // Indeks 33 adalah 'total'
+                    return entry ? entry[33] : 0; // Indeks 33 adalah 'JUMLAH'
                 }),
                 borderColor: `hsl(${Math.random() * 360}, 70%, 50%)`,
                 fill: false
@@ -197,7 +195,6 @@ function processAnalysis(data) {
         });
     }
 
-    // Status Rekod
     const recorded = new Set();
     const allClasses = [];
     for (let t = 1; t <= 5; t++) {
