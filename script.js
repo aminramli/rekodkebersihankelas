@@ -1,4 +1,4 @@
-const APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwzgiOfEdY7cp68frcTXwPZ_mEmR9Vg9qEERHR0wvIFtP7FLrrmqiQzFt7_bsCINi_5/exec';
+const APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyFzwKUIEj1hFn38aHukVF7sb-XXJ_MgZlJi9INQeTQbTwyjCuLSrOtKDUXCFHV70iK/exec';
 const CRITERIA_COUNT = 28;
 let charts = {};
 let isLoggedIn = false;
@@ -97,7 +97,10 @@ function fetchAnalysisData() {
             if (xhr.status === 200) {
                 try {
                     const data = JSON.parse(xhr.responseText);
-                    console.log('Data dari Google Sheet:', data); // Log data untuk debugging
+                    console.log('Data dari Google Sheet:', data); // Log data mentah
+                    if (data.length === 0) {
+                        alert('Tiada data dalam Google Sheet.');
+                    }
                     processAnalysis(data);
                 } catch (e) {
                     alert('Ralat memproses data dari Google Sheet: ' + e.message);
@@ -121,20 +124,24 @@ function processAnalysis(data) {
     const currentMonth = 'MAC';
 
     const monthFilter = document.getElementById('analysisMonth').value || currentMonth;
-    console.log('Bulan yang dipilih:', monthFilter); // Log bulan untuk debugging
+    console.log('Bulan yang dipilih:', monthFilter); // Log bulan yang dipilih
+
     const tablesDiv = document.getElementById('tables');
     tablesDiv.innerHTML = '';
 
     // Penapis data berdasarkan bulan
-    const filteredData = data.filter(row => row[3] === monthFilter); // Indeks 3 adalah 'bulan'
-    console.log('Data ditapis untuk bulan:', filteredData); // Log data ditapis
+    const filteredData = data.filter(row => {
+        const bulan = String(row[3]).toUpperCase(); // Indeks 3 adalah 'bulan', pastikan huruf besar
+        return bulan === monthFilter;
+    });
+    console.log('Data ditapis untuk bulan:', filteredData); // Log data yang ditapis
 
     if (filteredData.length === 0) {
         tablesDiv.innerHTML = '<p>Tiada data untuk bulan yang dipilih.</p>';
     } else {
         for (let tingkatan = 1; tingkatan <= 5; tingkatan++) {
             let tableData = filteredData
-                .filter(row => row[1] === tingkatan.toString()) // Indeks 1 adalah 'tingkatan'
+                .filter(row => String(row[1]) === String(tingkatan)) // Indeks 1 adalah 'tingkatan'
                 .map(row => ({
                     kelas: row[2],       // Indeks 2 adalah 'kelas'
                     total: row[32],      // Indeks 32 adalah 'total'
@@ -160,7 +167,7 @@ function processAnalysis(data) {
             datasets: classes.map(kelas => ({
                 label: kelas,
                 data: months.map(month => {
-                    const entry = data.find(row => row[1] === tingkatan.toString() && row[2] === kelas && row[3] === month);
+                    const entry = data.find(row => String(row[1]) === String(tingkatan) && row[2] === kelas && String(row[3]).toUpperCase() === month);
                     return entry ? entry[32] : 0; // Indeks 32 adalah 'total'
                 }),
                 borderColor: `hsl(${Math.random() * 360}, 70%, 50%)`,
@@ -190,7 +197,7 @@ function processAnalysis(data) {
     const allClasses = [];
     for (let t = 1; t <= 5; t++) {
         classes.forEach(k => allClasses.push(`${t}-${k}`));
-        data.filter(row => row[3] === currentMonth && row[1] === t.toString())
+        data.filter(row => String(row[3]).toUpperCase() === currentMonth && String(row[1]) === String(t))
             .forEach(row => recorded.add(`${row[1]}-${row[2]}`));
     }
     
