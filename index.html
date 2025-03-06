@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MRSM Sultan Azlan Shah - Kebersihan Kelas</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <h1>MRSM Sultan Azlan Shah - Kebersihan Kelas</h1>
+        <div class="nav-buttons">
+            <button onclick="showAnalysis()">Analisis Kebersihan</button>
+            <button onclick="showLogin()">Borang Kebersihan</button>
+            <button id="logoutBtn" onclick="logout()" style="display: none;">Log Keluar</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Login Section -->
+        <div id="login" class="section">
+            <h2>Log Masuk</h2>
+            <input type="text" id="username" placeholder="ID">
+            <input type="password" id="password" placeholder="Kata Laluan">
+            <button id="loginBtn" onclick="login()">Log Masuk</button>
+        </div>
+
+        <!-- Form Section -->
+        <div id="form" class="section">
+            <h2>Rekod Kebersihan Kelas</h2>
+            <form id="cleanlinessForm">
+                <div class="form-group">
+                    <label>Tingkatan:</label>
+                    <select name="tingkatan" required>
+                        <option value="">Pilih Tingkatan</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Kelas:</label>
+                    <select name="kelas" required>
+                        <option value="">Pilih Kelas</option>
+                        <option value="BERLIAN">BERLIAN</option>
+                        <option value="DELIMA">DELIMA</option>
+                        <option value="INTAN">INTAN</option>
+                        <option value="NILAM">NILAM</option>
+                        <option value="TOPAZ">TOPAZ</option>
+                        <option value="ZAMRUD">ZAMRUD</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Bulan:</label>
+                    <select name="bulan" required>
+                        <option value="">Pilih Bulan</option>
+                        <option value="JANUARI">JANUARI</option>
+                        <option value="FEBRUARI">FEBRUARI</option>
+                        <option value="MAC">MAC</option>
+                        <option value="APRIL">APRIL</option>
+                        <option value="MEI">MEI</option>
+                        <option value="JUN">JUN</option>
+                        <option value="JULAI">JULAI</option>
+                        <option value="OGOS">OGOS</option>
+                        <option value="SEPTEMBER">SEPTEMBER</option>
+                        <option value="OKTOBER">OKTOBER</option>
+                        <option value="NOVEMBER">NOVEMBER</option>
+                        <option value="DISEMBER">DISEMBER</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Tarikh:</label>
+                    <input type="date" name="tarikh" required>
+                </div>
+
+                <div class="criteria">
+                    <h3>Kriteria Penilaian (1-5)</h3>
+                    <!-- Semua 28 kriteria -->
+                    <div class="rating">
+                        <label>Meja Guru - Ada Alas dan Bunga</label>
+                        <input type="number" name="mejaGuru" min="1" max="5" required>
+                    </div>
+                    <div class="rating">
+                        <label>Meja Pelajar - Mempunyai Nama</label>
+                        <input type="number" name="mejaPelajar" min="1" max="5" required>
+                    </div>
+                    <div class="rating">
+                        <label>Jadual Bertugas - Kreatif</label>
+                        <input type="number" name="jadualBertugas" min="1" max="5" required>
+                    </div>
+                    <div class="rating">
+                        <label>Jam Dinding - Ada & Berfungsi</label>
+                        <input type="number" name="jamDinding" min="1" max="5" required>
+                    </div>
+                    <div class="rating">
+                        <label>Langsir - Kemas & Bersih</label>
+                        <input type="number" name="langsir" min="1" max="5" required>
+                    </div>
+                    <div class="rating">
+                        <label>Buku - Disusun Kemas Dalam Loker</label>
+                        <input type="number" name="buku" min="1" max="5" required>
+                    </div>
+                    <div class="rating">
+                        <label>Mempunyai Nama Pelajar (Loker)</label>
+                        <input type="number" name="lokerNama" min="1" max="5" required>
+                    </div>
+                    <div class="rating">
+                        <label>Lantai Bersih</label>
+                        <input type="number" name="lantai" min="1" max="5" required>
+                    </div>
+                    <div class="rating">
+                        <label>Penyapu/Penyodok - Digantung di Belakang Kelas</label>
+                        <input type="number" name="penyapu" min="1" max="5" required>
+                    </div>
+                    <div class="rating">
+                        <label>Tong Sampah Kecil - Tiada Sampah Selepas Rehat dan Sebelum Balik</label>
+                        <input type="number" name="tongSampah" min="1" max="5" required>
+                    </div>
+                    <div class="rating">
+                        <label>Kerusi - Kemas dan Teratur</label>
+                        <input type="number" name="kerusi" min="1" max="5" required>
+                    </div>
+                    <div class="rating">
+                        <label>Buku di Bawah Meja - Kemas</label>
+                        <input type="number" name="bukuBawah" min="1" max="5" required>
+                    </div>
+                    <div class="rating">
+                        <label>Lampu - Bersih</label>
+                        <input type="number" name="lampu" min="1" max="5" required>
+                    </div>
+                    <div class="rating">
+                        <label>Kipas - Bersih</label>
+                        <input type="number" name="kipas" min="1" max="5" required>
+                    </div>
+                    <div class="rating">
+                        <label>Papan Putih - Bersih</label>
+                        <input type="number" name="papanPutih" min="1" max="5" required>
+                    </div>
+                    <div class="rating">
+                        <label>Pemadam White Board - Ada</label>
+                        <input type="number" name="pemadam" min="1" max="5" required>
+                    </div>
+                    <div class="rating">
+                        <label>Tingkap - Bersih</label>
+                        <input type="number" name="tingkap" min="1" max="5" required>
+                    </div>
+                    <div class="rating">
+                        <label>Pintu - Bersih</label>
+                        <input type="number" name="pintu" min="1" max="5" required>
+                    </div>
+                    <div class="rating">
+                        <label>Siling - Bersih</label>
+                        <input type="number" name="siling" min="1" max="5" required>
+                    </div>
+                    <div class="rating">
+                        <label>Dinding Kelas - Bersih</label>
+                        <input type="number" name="dinding" min="1" max="5" required>
+                    </div>
+                    <div class="rating">
+                        <label>Mempunyai Tajuk (Softboard)</label>
+                        <input type="number" name="softboardTajuk" min="1" max="5" required>
+                    </div>
+                    <div class="rating">
+                        <label>Mengikut Pelan (Softboard)</label>
+                        <input type="number" name="softboardPelan" min="1" max="5" required>
+                    </div>
+                    <div class="rating">
+                        <label>Dihias Dengan Kreatif dan Menarik (Softboard)</label>
+                        <input type="number" name="softboardHiasan" min="1" max="5" required>
+                    </div>
+                    <div class="rating">
+                        <label>Alas Meja Pelajar</label>
+                        <input type="number" name="alasMeja" min="1" max="5" required>
+                    </div>
+                    <div class="rating">
+                        <label>Banner Pintu</label>
+                        <input type="number" name="banner" min="1" max="5" required>
+                    </div>
+                    <div class="rating">
+                        <label>Kata-Kata Motivasi</label>
+                        <input type="number" name="motivasi" min="1" max="5" required>
+                    </div>
+                    <div class="rating">
+                        <label>Sudut Khas Dalam Kelas</label>
+                        <input type="number" name="sudutKhas" min="1" max="5" required>
+                    </div>
+                    <div class="rating">
+                        <label>Koridor Kelas - Bersih & Ceria</label>
+                        <input type="number" name="koridor" min="1" max="5" required>
+                    </div>
+                </div>
+
+                <button type="submit" id="submitBtn">Hantar</button>
+            </form>
+        </div>
+
+        <!-- Analysis Section -->
+        <div id="analysis" class="section active">
+            <h2>Analisis Kebersihan Kelas</h2>
+            <div id="monthSelector" class="form-group">
+                <label>Pilih Bulan:</label>
+                <select id="analysisMonth">
+                    <option value="">Pilih Bulan</option>
+                    <option value="JANUARI">JANUARI</option>
+                    <option value="FEBRUARI">FEBRUARI</option>
+                    <option value="MAC">MAC</option>
+                    <option value="APRIL">APRIL</option>
+                    <option value="MEI">MEI</option>
+                    <option value="JUN">JUN</option>
+                    <option value="JULAI">JULAI</option>
+                    <option value="OGOS">OGOS</option>
+                    <option value="SEPTEMBER">SEPTEMBER</option>
+                    <option value="OKTOBER">OKTOBER</option>
+                    <option value="NOVEMBER">NOVEMBER</option>
+                    <option value="DISEMBER">DISEMBER</option>
+                </select>
+            </div>
+
+            <div id="tables"></div>
+            <div id="charts">
+                <div class="chart-container"><canvas id="chart1"></canvas></div>
+                <div class="chart-container"><canvas id="chart2"></canvas></div>
+                <div class="chart-container"><canvas id="chart3"></canvas></div>
+                <div class="chart-container"><canvas id="chart4"></canvas></div>
+                <div class="chart-container"><canvas id="chart5"></canvas></div>
+            </div>
+            <div id="status">
+                <h3>Status Rekod (Mac 2025)</h3>
+                <div id="recorded"></div>
+                <div id="notRecorded"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© Amin Ramli 2025</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
