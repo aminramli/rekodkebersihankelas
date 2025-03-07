@@ -106,7 +106,7 @@ function showPage(page) {
     page.classList.remove("hidden");
 }
 
-// Form Setup
+// Form Setup - Diperbaiki untuk Accessibility
 const criteriaContainer = document.getElementById("criteriaList");
 displayCriteriaList.forEach((criterion, index) => {
     const div = document.createElement("div");
@@ -115,7 +115,9 @@ displayCriteriaList.forEach((criterion, index) => {
         <label>${criterion}:</label>
         <div class="radio-group">
             ${[1, 2, 3, 4, 5].map(score => `
-                <label><input type="radio" name="criteria${index}" value="${score}" required> ${score}</label>
+                <label for="criteria${index}_${score}">
+                    <input type="radio" id="criteria${index}_${score}" name="criteria${index}" value="${score}" required> ${score}
+                </label>
             `).join("")}
         </div>
     `;
