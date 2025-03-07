@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MRSM Sultan Azlan Shah - Kebersihan Kelas</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav>
+            <button id="analysisBtn" class="nav-btn active">Analisis Kebersihan Kelas</button>
+            <button id="formBtn" class="nav-btn">Borang Kebersihan Kelas</button>
+            <button id="statusBtn" class="nav-btn hidden">Status Rekod</button>
+            <button id="logoutBtn" class="nav-btn hidden">Log Keluar</button>
+        </nav>
+    </header>
+
+    <!-- Login Page -->
+    <div id="loginPage" class="page hidden">
+        <div class="login-container">
+            <h2>Log Masuk</h2>
+            <input type="text" id="loginId" required>
+            <input type="password" id="loginPassword" required>
+            <div class="button-container">
+                <button id="loginSubmit" class="btn">Log Masuk</button>
+            </div>
+            <p id="loginError" class="error"></p>
+        </div>
+    </div>
+
+    <!-- Form Page -->
+    <div id="formPage" class="page hidden">
+        <div class="form-container">
+            <h2>Borang Kebersihan Kelas MRSM Sultan Azlan Shah</h2>
+            <form id="cleanlinessForm">
+                <label>Tingkatan:</label>
+                <select name="tingkatan" required>
+                    <option value="">-</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+
+                <label>Kelas:</label>
+                <select name="kelas" required>
+                    <option value="">-</option>
+                    <option value="BERLIAN">BERLIAN</option>
+                    <option value="DELIMA">DELIMA</option>
+                    <option value="INTAN">INTAN</option>
+                    <option value="NILAM">NILAM</option>
+                    <option value="TOPAZ">TOPAZ</option>
+                    <option value="ZAMRUD">ZAMRUD</option>
+                </select>
+
+                <label>Bulan:</label>
+                <select name="bulan" required>
+                    <option value="">-</option>
+                    <option value="JANUARI">JANUARI</option>
+                    <option value="FEBRUARI">FEBRUARI</option>
+                    <option value="MAC">MAC</option>
+                    <option value="APRIL">APRIL</option>
+                    <option value="MEI">MEI</option>
+                    <option value="JUN">JUN</option>
+                    <option value="JULAI">JULAI</option>
+                    <option value="OGOS">OGOS</option>
+                    <option value="SEPTEMBER">SEPTEMBER</option>
+                    <option value="OKTOBER">OKTOBER</option>
+                    <option value="NOVEMBER">NOVEMBER</option>
+                    <option value="DISEMBER">DISEMBER</option>
+                </select>
+
+                <label>Tarikh:</label>
+                <input type="date" name="tarikh" required>
+
+                <!-- Radio Buttons for Criteria -->
+                <div id="criteriaList" class="criteria-container"></div>
+
+                <div class="total-section">
+                    <label>Jumlah: <span id="totalScore">0</span></label>
+                    <label>Peratusan: <span id="percentageScore">0%</span></label>
+                </div>
+
+                <div class="button-container">
+                    <button type="submit" id="submitBtn" class="btn">Hantar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Analysis Page -->
+    <div id="analysisPage" class="page">
+        <div class="analysis-container">
+            <h2>Analisis Kebersihan Kelas MRSM Sultan Azlan Shah</h2>
+            <select id="monthFilter">
+                <option value="">-</option>
+                <option value="JANUARI">JANUARI</option>
+                <option value="FEBRUARI">FEBRUARI</option>
+                <option value="MAC">MAC</option>
+                <option value="APRIL">APRIL</option>
+                <option value="MEI">MEI</option>
+                <option value="JUN">JUN</option>
+                <option value="JULAI">JULAI</option>
+                <option value="OGOS">OGOS</option>
+                <option value="SEPTEMBER">SEPTEMBER</option>
+                <option value="OKTOBER">OKTOBER</option>
+                <option value="NOVEMBER">NOVEMBER</option>
+                <option value="DISEMBER">DISEMBER</option>
+            </select>
+
+            <!-- Tables for Each Tingkatan -->
+            <div id="rankingTables"></div>
+
+            <!-- Line Charts -->
+            <div id="charts">
+                <canvas id="chart1"></canvas>
+                <canvas id="chart2"></canvas>
+                <canvas id="chart3"></canvas>
+                <canvas id="chart4"></canvas>
+                <canvas id="chart5"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Status Page -->
+    <div id="statusPage" class="page hidden">
+        <div class="status-container">
+            <h2>Status Rekod</h2>
+            <div id="recordStatus"></div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© Disediakan oleh Amin Ramli 2025</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="scripts.js"></script>
+</body>
+</html>
