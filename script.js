@@ -95,29 +95,43 @@ if (document.getElementById('cleaningForm')) {
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     submitBtn.disabled = true;
+    message.textContent = 'Menghantar...';
     const formData = new FormData(form);
     const data = {
-      tingkatan: formData.get('tingkatan'),
-      kelas: formData.get('kelas'),
-      bulan: formData.get('bulan'),
-      tarikh: formData.get('tarikh'),
+      tingkatan: formData.get('tingkatan') || "",
+      kelas: formData.get('kelas') || "",
+      bulan: formData.get('bulan') || "",
+      tarikh: formData.get('tarikh') || ""
     };
+
+    // Pastikan semua 28 kriteria dihantar
     criteriaList.forEach((_, i) => {
-      data[`criteria${i}`] = formData.get(`criteria${i}`);
+      const value = formData.get(`criteria${i}`);
+      data[`criteria${i}`] = value ? value : "0"; // Default ke "0" jika tiada pilihan
     });
+
+    // Log data yang akan dihantar
+    console.log("Data to send:", JSON.stringify(data));
 
     try {
       const response = await fetch(API_URL, {
         method: 'POST',
         body: JSON.stringify(data),
+        headers: { 'Content-Type': 'application/json' },
+        mode: 'cors',
+        redirect: 'follow'
       });
+      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
       const text = await response.text();
       message.textContent = text;
-      form.reset();
-      totalScore.textContent = '0';
-      percentage.textContent = '0';
+      if (text === "Data berjaya disimpan") {
+        form.reset();
+        totalScore.textContent = '0';
+        percentage.textContent = '0';
+      }
     } catch (error) {
-      message.textContent = 'Error: ' + error.message;
+      message.textContent = 'Error: Gagal menghantar data - ' + error.message;
+      console.error('POST Error:', error);
     } finally {
       submitBtn.disabled = false;
     }
@@ -132,8 +146,14 @@ if (document.getElementById('loadRankings')) {
   const rankingsDiv = document.getElementById('rankings');
 
   loadRankingsBtn.addEventListener('click', async () => {
+    rankingsDiv.innerHTML = 'Memuatkan...';
     try {
-      const response = await fetch(`${API_URL}?action=ranking&bulan=${monthSelect.value}`);
+      const response = await fetch(`${API_URL}?action=ranking&bulan=${encodeURIComponent(monthSelect.value)}`, {
+        method: 'GET',
+        mode: 'cors',
+        redirect: 'follow'
+      });
+      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
       const rankings = await response.json();
       
       rankingsDiv.innerHTML = '';
@@ -153,7 +173,8 @@ if (document.getElementById('loadRankings')) {
         rankingsDiv.appendChild(table);
       });
     } catch (error) {
-      rankingsDiv.innerHTML = 'Error: ' + error.message;
+      rankingsDiv.innerHTML = 'Error: Gagal memuat ranking - ' + error.message;
+      console.error('GET Ranking Error:', error);
     }
   });
 }
@@ -166,30 +187,38 @@ if (document.getElementById('statusTables')) {
   if (localStorage.getItem('loggedIn') !== 'true') {
     window.location.href = 'form.html';
   } else {
-    fetch(`${API_URL}?action=status`)
-      .then(res => res.json())
-      .then(status => {
-        [1, 2, 3, 4, 5].forEach(tingkatan => {
-          const table = document.createElement('table');
-          table.innerHTML = `
-            <thead>
-              <tr><th colspan="2">Tingkatan ${tingkatan}</th></tr>
-              <tr><th>Kelas</th><th>Status</th></tr>
-            </thead>
-            <tbody>
-              ${Object.entries(status[tingkatan]).map(([kelas, recorded]) => `
-                <tr class="${recorded ? 'green' : 'red'}">
-                  <td>${kelas}</td>
-                  <td>${recorded ? 'Sudah Direkod' : 'Belum Direkod'}</td>
-                </tr>
-              `).join('')}
-            </tbody>
-          `;
-          statusTables.appendChild(table);
-        });
-      })
-      .catch(error => {
-        statusTables.innerHTML = 'Error: ' + error.message;
+    statusTables.innerHTML = 'Memuatkan...';
+    try {
+      const response = await fetch(`${API_URL}?action=status`, {
+        method: 'GET',
+        mode: 'cors',
+        redirect: 'follow'
       });
+      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+      const status = await response.json();
+      
+      statusTables.innerHTML = '';
+      [1, 2, 3, 4, 5].forEach(tingkatan => {
+        const table = document.createElement('table');
+        table.innerHTML = `
+          <thead>
+            <tr><th colspan="2">Tingkatan ${tingkatan}</th></tr>
+            <tr><th>Kelas</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            ${Object.entries(status[tingkatan]).map(([kelas, recorded]) => `
+              <tr class="${recorded ? 'green' : 'red'}">
+                <td>${kelas}</td>
+                <td>${recorded ? 'Sudah Direkod' : 'Belum Direkod'}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        `;
+        statusTables.appendChild(table);
+      });
+    } catch (error) {
+      statusTables.innerHTML = 'Error: Gagal memuat status - ' + error.message;
+      console.error('GET Status Error:', error);
+    }
   }
 }
