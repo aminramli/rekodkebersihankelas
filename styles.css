@@ -1,250 +1,250 @@
 /* Reset dan Base Styles */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  body {
-    font-family: 'Segoe UI', Arial, sans-serif;
-    background-color: #f4f7fa;
-    color: #333;
-    line-height: 1.6;
-  }
-  
-  /* Header dan Navigasi */
-  header {
-    background-color: #007BFF;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background-color: #f4f7fa;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* Header dan Navigasi */
+header {
+  background-color: #007BFF;
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+nav {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+nav button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  background-color: #FFFFFF;
+  color: #007BFF;
+  font-weight: 600;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+nav button:hover {
+  background-color: #e6f0ff;
+  transform: translateY(-2px);
+}
+
+nav .logout {
+  background-color: #ff4d4d;
+  color: #FFFFFF;
+}
+
+nav .logout:hover {
+  background-color: #e60000;
+}
+
+/* Main Content */
+main {
+  min-height: calc(100vh - 140px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 1rem;
+}
+
+.container {
+  background-color: #FFFFFF;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  max-width: 800px;
+  width: 100%;
+}
+
+h1 {
+  color: #007BFF;
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 1.8rem;
+}
+
+/* Form Elements */
+.select-wrapper {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+select, input[type="text"], input[type="password"], input[type="date"] {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+select:focus, input:focus {
+  border-color: #007BFF;
+  outline: none;
+}
+
+.btn-primary {
+  background-color: #007BFF;
+  color: #FFFFFF;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 25px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: block;
+  margin: 1rem auto;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+.btn-primary:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+/* Criteria (Skala Interaktif) */
+.criteria-container {
+  max-height: 400px;
+  overflow-y: auto;
+  margin-bottom: 1rem;
+}
+
+.criteria-item {
+  margin: 1rem 0;
+  padding: 1rem;
+  background-color: #f9fbfc;
+  border-radius: 8px;
+  transition: transform 0.2s ease;
+}
+
+.criteria-item:hover {
+  transform: scale(1.02);
+}
+
+.criteria-item label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.rating {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.rating input[type="radio"] {
+  display: none;
+}
+
+.rating label {
+  width: 40px;
+  height: 40px;
+  background-color: #ddd;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.rating input[type="radio"]:checked + label {
+  background-color: #007BFF;
+}
+
+/* Score Summary */
+#scoreSummary {
+  text-align: center;
+  margin: 1rem 0;
+  font-weight: 600;
+}
+
+/* Tables */
+.table-container {
+  margin-top: 2rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #FFFFFF;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+th, td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+th {
+  background-color: #007BFF;
+  color: #FFFFFF;
+  font-weight: 600;
+}
+
+tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+.red { background-color: #ffcccc; }
+.green { background-color: #ccffcc; }
+
+/* Login Form */
+.login-form {
+  text-align: center;
+}
+
+.login-form input {
+  margin-bottom: 1rem;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 1rem;
+  background-color: #007BFF;
+  color: #FFFFFF;
+  font-size: 0.9rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
     padding: 1rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
   
   nav {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-  
-  nav button {
-    padding: 0.75rem 1.5rem;
-    border: none;
-    background-color: #FFFFFF;
-    color: #007BFF;
-    font-weight: 600;
-    border-radius: 25px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-  
-  nav button:hover {
-    background-color: #e6f0ff;
-    transform: translateY(-2px);
-  }
-  
-  nav .logout {
-    background-color: #ff4d4d;
-    color: #FFFFFF;
-  }
-  
-  nav .logout:hover {
-    background-color: #e60000;
-  }
-  
-  /* Main Content */
-  main {
-    min-height: calc(100vh - 140px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem 1rem;
-  }
-  
-  .container {
-    background-color: #FFFFFF;
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    max-width: 800px;
-    width: 100%;
-  }
-  
-  h1 {
-    color: #007BFF;
-    text-align: center;
-    margin-bottom: 2rem;
-    font-size: 1.8rem;
-  }
-  
-  /* Form Elements */
-  .select-wrapper {
-    position: relative;
-    margin-bottom: 1rem;
-  }
-  
-  select, input[type="text"], input[type="password"], input[type="date"] {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 1rem;
-    transition: border-color 0.3s ease;
-  }
-  
-  select:focus, input:focus {
-    border-color: #007BFF;
-    outline: none;
-  }
-  
-  .btn-primary {
-    background-color: #007BFF;
-    color: #FFFFFF;
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 25px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: block;
-    margin: 1rem auto;
-  }
-  
-  .btn-primary:hover {
-    background-color: #0056b3;
-    transform: translateY(-2px);
-  }
-  
-  .btn-primary:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
-  }
-  
-  /* Criteria (Skala Interaktif) */
-  .criteria-container {
-    max-height: 400px;
-    overflow-y: auto;
-    margin-bottom: 1rem;
-  }
-  
-  .criteria-item {
-    margin: 1rem 0;
-    padding: 1rem;
-    background-color: #f9fbfc;
-    border-radius: 8px;
-    transition: transform 0.2s ease;
-  }
-  
-  .criteria-item:hover {
-    transform: scale(1.02);
-  }
-  
-  .criteria-item label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 500;
-  }
-  
-  .rating {
-    display: flex;
+    flex-direction: column;
     gap: 0.5rem;
   }
   
-  .rating input[type="radio"] {
-    display: none;
+  .criteria-item {
+    padding: 0.75rem;
   }
-  
-  .rating label {
-    width: 40px;
-    height: 40px;
-    background-color: #ddd;
-    color: #fff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-  
-  .rating input[type="radio"]:checked + label {
-    background-color: #007BFF;
-  }
-  
-  /* Score Summary */
-  #scoreSummary {
-    text-align: center;
-    margin: 1rem 0;
-    font-weight: 600;
-  }
-  
-  /* Tables */
-  .table-container {
-    margin-top: 2rem;
-  }
-  
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: #FFFFFF;
-    border-radius: 8px;
-    overflow: hidden;
-  }
-  
-  th, td {
-    padding: 1rem;
-    text-align: left;
-    border-bottom: 1px solid #eee;
-  }
-  
-  th {
-    background-color: #007BFF;
-    color: #FFFFFF;
-    font-weight: 600;
-  }
-  
-  tr:nth-child(even) {
-    background-color: #f8f9fa;
-  }
-  
-  .red { background-color: #ffcccc; }
-  .green { background-color: #ccffcc; }
-  
-  /* Login Form */
-  .login-form {
-    text-align: center;
-  }
-  
-  .login-form input {
-    margin-bottom: 1rem;
-  }
-  
-  /* Footer */
-  footer {
-    text-align: center;
-    padding: 1rem;
-    background-color: #007BFF;
-    color: #FFFFFF;
-    font-size: 0.9rem;
-  }
-  
-  /* Responsive */
-  @media (max-width: 768px) {
-    .container {
-      padding: 1rem;
-    }
-    
-    nav {
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-    
-    .criteria-item {
-      padding: 0.75rem;
-    }
-  }
-  
-  .hidden {
-    display: none;
-  }
+}
+
+.hidden {
+  display: none;
+}
