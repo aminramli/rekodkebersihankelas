@@ -98,20 +98,14 @@ if (document.getElementById('cleaningForm')) {
     message.textContent = 'Menghantar...';
     const formData = new FormData(form);
     const data = {
-      tingkatan: formData.get('tingkatan') || "",
-      kelas: formData.get('kelas') || "",
-      bulan: formData.get('bulan') || "",
-      tarikh: formData.get('tarikh') || ""
+      tingkatan: formData.get('tingkatan'),
+      kelas: formData.get('kelas'),
+      bulan: formData.get('bulan'),
+      tarikh: formData.get('tarikh'),
     };
-
-    // Pastikan semua 28 kriteria dihantar
     criteriaList.forEach((_, i) => {
-      const value = formData.get(`criteria${i}`);
-      data[`criteria${i}`] = value ? value : "0"; // Default ke "0" jika tiada pilihan
+      data[`criteria${i}`] = formData.get(`criteria${i}`) || "0";
     });
-
-    // Log data yang akan dihantar
-    console.log("Data to send:", JSON.stringify(data));
 
     try {
       const response = await fetch(API_URL, {
